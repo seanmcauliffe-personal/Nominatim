@@ -10,10 +10,11 @@ Tokenizer for testing.
 from nominatim_db.data.place_info import PlaceInfo
 from nominatim_db.config import Configuration
 
+
 def create(dsn, data_dir):
-    """ Create a new instance of the tokenizer provided by this module.
-    """
+    """Create a new instance of the tokenizer provided by this module."""
     return DummyTokenizer(dsn, data_dir)
+
 
 class DummyTokenizer:
 
@@ -23,22 +24,18 @@ class DummyTokenizer:
         self.init_state = None
         self.analyser_cache = {}
 
-
     def init_new_db(self, *args, **kwargs):
         assert self.init_state is None
         self.init_state = "new"
-
 
     def init_from_project(self, config):
         assert isinstance(config, Configuration)
         assert self.init_state is None
         self.init_state = "loaded"
 
-
     @staticmethod
     def finalize_import(_):
         pass
-
 
     def name_analyzer(self):
         return DummyNameAnalyzer(self.analyser_cache)
@@ -52,11 +49,9 @@ class DummyNameAnalyzer:
     def __exit__(self, exc_type, exc_value, traceback):
         self.close()
 
-
     def __init__(self, cache):
         self.analyser_cache = cache
-        cache['countries'] = []
-
+        cache["countries"] = []
 
     def close(self):
         pass
@@ -70,10 +65,10 @@ class DummyNameAnalyzer:
         pass
 
     def update_special_phrases(self, phrases, should_replace):
-        self.analyser_cache['special_phrases'] = phrases
+        self.analyser_cache["special_phrases"] = phrases
 
     def add_country_names(self, code, names):
-        self.analyser_cache['countries'].append((code, names))
+        self.analyser_cache["countries"].append((code, names))
 
     @staticmethod
     def process_place(place):

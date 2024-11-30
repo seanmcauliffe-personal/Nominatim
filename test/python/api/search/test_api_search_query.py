@@ -11,28 +11,33 @@ import pytest
 
 from nominatim_api.search import query
 
+
 class MyToken(query.Token):
 
     def get_category(self):
-        return 'this', 'that'
+        return "this", "that"
 
 
 def mktoken(tid: int):
-    return MyToken(penalty=3.0, token=tid, count=1, addr_count=1,
-                   lookup_word='foo')
+    return MyToken(penalty=3.0, token=tid, count=1, addr_count=1, lookup_word="foo")
 
 
-@pytest.mark.parametrize('ptype,ttype', [('NONE', 'WORD'),
-                                         ('AMENITY', 'QUALIFIER'),
-                                         ('STREET', 'PARTIAL'),
-                                         ('CITY', 'WORD'),
-                                         ('COUNTRY', 'COUNTRY'),
-                                         ('POSTCODE', 'POSTCODE')])
+@pytest.mark.parametrize(
+    "ptype,ttype",
+    [
+        ("NONE", "WORD"),
+        ("AMENITY", "QUALIFIER"),
+        ("STREET", "PARTIAL"),
+        ("CITY", "WORD"),
+        ("COUNTRY", "COUNTRY"),
+        ("POSTCODE", "POSTCODE"),
+    ],
+)
 def test_phrase_compatible(ptype, ttype):
     assert query.PhraseType[ptype].compatible_with(query.TokenType[ttype], False)
 
 
-@pytest.mark.parametrize('ptype', ['COUNTRY', 'POSTCODE'])
+@pytest.mark.parametrize("ptype", ["COUNTRY", "POSTCODE"])
 def test_phrase_incompatible(ptype):
     assert not query.PhraseType[ptype].compatible_with(query.TokenType.PARTIAL, True)
 
@@ -46,7 +51,9 @@ def test_query_node_empty():
 
 def test_query_node_with_content():
     qn = query.QueryNode(query.BreakType.PHRASE, query.PhraseType.NONE)
-    qn.starting.append(query.TokenList(2, query.TokenType.PARTIAL, [mktoken(100), mktoken(101)]))
+    qn.starting.append(
+        query.TokenList(2, query.TokenType.PARTIAL, [mktoken(100), mktoken(101)])
+    )
     qn.starting.append(query.TokenList(2, query.TokenType.WORD, [mktoken(1000)]))
 
     assert not qn.has_tokens(3, query.TokenType.PARTIAL)
@@ -67,7 +74,7 @@ def test_query_struct_empty():
 
 
 def test_query_struct_with_tokens():
-    q = query.QueryStruct([query.Phrase(query.PhraseType.NONE, 'foo bar')])
+    q = query.QueryStruct([query.Phrase(query.PhraseType.NONE, "foo bar")])
     q.add_node(query.BreakType.WORD, query.PhraseType.NONE)
     q.add_node(query.BreakType.END, query.PhraseType.NONE)
 
@@ -86,12 +93,12 @@ def test_query_struct_with_tokens():
     assert len(partials) == 2
     assert [t.token for t in partials] == [1, 2]
 
-    assert q.find_lookup_word_by_id(4) == 'None'
-    assert q.find_lookup_word_by_id(99) == '[W]foo'
+    assert q.find_lookup_word_by_id(4) == "None"
+    assert q.find_lookup_word_by_id(99) == "[W]foo"
 
 
 def test_query_struct_incompatible_token():
-    q = query.QueryStruct([query.Phrase(query.PhraseType.COUNTRY, 'foo bar')])
+    q = query.QueryStruct([query.Phrase(query.PhraseType.COUNTRY, "foo bar")])
     q.add_node(query.BreakType.WORD, query.PhraseType.COUNTRY)
     q.add_node(query.BreakType.END, query.PhraseType.NONE)
 
@@ -103,7 +110,7 @@ def test_query_struct_incompatible_token():
 
 
 def test_query_struct_amenity_single_word():
-    q = query.QueryStruct([query.Phrase(query.PhraseType.AMENITY, 'bar')])
+    q = query.QueryStruct([query.Phrase(query.PhraseType.AMENITY, "bar")])
     q.add_node(query.BreakType.END, query.PhraseType.NONE)
 
     q.add_token(query.TokenRange(0, 1), query.TokenType.PARTIAL, mktoken(1))
@@ -116,7 +123,7 @@ def test_query_struct_amenity_single_word():
 
 
 def test_query_struct_amenity_two_words():
-    q = query.QueryStruct([query.Phrase(query.PhraseType.AMENITY, 'foo bar')])
+    q = query.QueryStruct([query.Phrase(query.PhraseType.AMENITY, "foo bar")])
     q.add_node(query.BreakType.WORD, query.PhraseType.AMENITY)
     q.add_node(query.BreakType.END, query.PhraseType.NONE)
 
@@ -132,4 +139,3 @@ def test_query_struct_amenity_two_words():
     assert len(q.get_tokens(query.TokenRange(1, 2), query.TokenType.PARTIAL)) == 1
     assert len(q.get_tokens(query.TokenRange(1, 2), query.TokenType.NEAR_ITEM)) == 0
     assert len(q.get_tokens(query.TokenRange(1, 2), query.TokenType.QUALIFIER)) == 1
-

@@ -31,7 +31,6 @@ where `lat` and `lon` are latitude and longitude of a coordinate in WGS84
 projection. The API returns exactly one result or an error when the coordinate
 is in an area with no OSM data coverage.
 
-
 !!! tip
     The reverse API allows a lookup of object by coordinate. If you want
     to look up an object by ID, use the [Address Lookup API](Lookup.md) instead.
@@ -40,7 +39,6 @@ is in an area with no OSM data coverage.
     The API can also be used with the URL
     `https://nominatim.openstreetmap.org/reverse.php`. This is now deprecated
     and will be removed in future versions.
-
 
 ## Parameters
 
@@ -54,7 +52,6 @@ This section lists additional parameters to further influence the output.
 
 See [Place Output Formats](Output.md) for details on each format.
 
-
 | Parameter | Value | Default |
 |-----------| ----- | ------- |
 | json_callback | function name | _unset_ |
@@ -64,7 +61,6 @@ the given name. See [JSONP](https://en.wikipedia.org/wiki/JSONP) for more
 information.
 
 Only has an effect for JSON output formats.
-
 
 ### Output details
 
@@ -82,7 +78,6 @@ The exact content of the address breakdown depends on the output format.
     There is a much larger set of categories and they are not always consistent,
     which makes them very hard to work with.
 
-
 | Parameter | Value | Default |
 |-----------| ----- | ------- |
 | extratags | 0 or 1 | 0 |
@@ -90,14 +85,12 @@ The exact content of the address breakdown depends on the output format.
 When set to 1, the response include any additional information in the result
 that is available in the database, e.g. wikipedia link, opening hours.
 
-
 | Parameter | Value | Default |
 |-----------| ----- | ------- |
 | namedetails | 0 or 1 | 0 |
 
 When set to 1, include a full list of names for the result. These may include
 language variants, older names, references and brand.
-
 
 ### Language of results
 
@@ -116,7 +109,6 @@ as the ["Accept-Language" HTTP header](https://developer.mozilla.org/en-US/docs/
     usually don't send any Accept-Language header, prompting Nominatim
     to show results in the local language. Browsers on the contrary always
     send the currently chosen browser language.
-
 
 ### Result restriction
 
@@ -143,7 +135,6 @@ In terms of address details the zoom levels are as follows:
   17  | major and minor streets
   18  | building
 
-
 | Parameter | Value | Default |
 |-----------| ----- | ------- |
 | layer     | comma-separated list of: `address`, `poi`, `railway`, `natural`, `manmade` | _unset_ (no restriction) |
@@ -165,7 +156,6 @@ features are imported into the database.
 The `natural` layer collects features like rivers, lakes and mountains while
 the `manmade` layer functions as a catch-all for features not covered by the
 other layers.
-
 
 ### Polygon output
 
@@ -189,7 +179,6 @@ of the output geometry. The parameter describes the
 tolerance in degrees with which the geometry may differ from the original
 geometry. Topology is preserved in the geometry.
 
-
 ### Other
 
 | Parameter | Value  | Default |
@@ -200,7 +189,6 @@ If you are making large numbers of request please include an appropriate email
 address to identify your requests. See Nominatim's
 [Usage Policy](https://operations.osmfoundation.org/policies/nominatim/) for more details.
 
-
 | Parameter | Value  | Default |
 |-----------| -----  | ------- |
 | debug     | 0 or 1 | 0       |
@@ -208,7 +196,6 @@ address to identify your requests. See Nominatim's
 Output assorted developer debug information. Data on internals of Nominatim's
 "search loop" logic, and SQL queries. The output is HTML format.
 This overrides the specified machine readable format.
-
 
 ## Examples
 
@@ -233,7 +220,7 @@ This overrides the specified machine readable format.
   </reversegeocode>
 ```
 
-##### Example with `format=jsonv2`
+### Example with `format=jsonv2`
 
 * [https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=-34.44076&lon=-58.70521](https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=-34.44076&lon=-58.70521)
 
@@ -265,7 +252,7 @@ This overrides the specified machine readable format.
 }
 ```
 
-##### Example with `format=geojson`
+#### Example with `format=geojson`
 
 * [https://nominatim.openstreetmap.org/reverse?format=geojson&lat=44.50155&lon=11.33989](https://nominatim.openstreetmap.org/reverse?format=geojson&lat=44.50155&lon=11.33989)
 
@@ -363,4 +350,3 @@ This overrides the specified machine readable format.
   }
 }
 ```
-

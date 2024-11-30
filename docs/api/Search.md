@@ -84,7 +84,6 @@ See [Place Output Formats](Output.md) for details on each format.
     has a different default behaviour for historical reasons. When the
     `format` parameter is omitted, the request will be forwarded to the Web UI.
 
-
 | Parameter | Value | Default |
 |-----------| ----- | ------- |
 | json_callback | function name | _unset_ |
@@ -103,7 +102,6 @@ Limit the maximum number of returned results. Cannot be more than 40.
 Nominatim may decide to return less results than given, if additional
 results do not sufficiently match the query.
 
-
 ### Output details
 
 | Parameter | Value | Default |
@@ -120,7 +118,6 @@ The exact content of the address breakdown depends on the output format.
     There is a much larger set of categories and they are not always consistent,
     which makes them very hard to work with.
 
-
 | Parameter | Value | Default |
 |-----------| ----- | ------- |
 | extratags | 0 or 1 | 0 |
@@ -128,14 +125,12 @@ The exact content of the address breakdown depends on the output format.
 When set to 1, the response include any additional information in the result
 that is available in the database, e.g. wikipedia link, opening hours.
 
-
 | Parameter | Value | Default |
 |-----------| ----- | ------- |
 | namedetails | 0 or 1 | 0 |
 
 When set to 1, include a full list of names for the result. These may include
 language variants, older names, references and brand.
-
 
 ### Language of results
 
@@ -157,8 +152,8 @@ as the ["Accept-Language" HTTP header](https://developer.mozilla.org/en-US/docs/
 
 ### Result restriction
 
-There are two ways to influence the results. *Filters* exclude certain
-kinds of results completely. *Boost parameters* only change the order of the
+There are two ways to influence the results. _Filters_ exclude certain
+kinds of results completely. _Boost parameters_ only change the order of the
 results and thus give a preference to some results over others.
 
 | Parameter | Value | Default |
@@ -253,7 +248,6 @@ search is allowed. Give the special keyword for the amenity in square
 brackets, e.g. `[pub]` and a selection of objects of this type is returned.
 There is no guarantee that the result returns all objects in the area.
 
-
 ### Polygon output
 
 | Parameter | Value  | Default |
@@ -305,11 +299,9 @@ Output assorted developer debug information. Data on internals of Nominatim's
 "search loop" logic, and SQL queries. The output is HTML format.
 This overrides the specified machine readable format.
 
-
 ## Examples
 
-
-##### XML with KML polygon
+### XML with KML polygon
 
 * [https://nominatim.openstreetmap.org/search?q=135+pilkington+avenue,+birmingham&format=xml&polygon_kml=1&addressdetails=1](https://nominatim.openstreetmap.org/search?q=135+pilkington+avenue,+birmingham&format=xml&polygon_kml=1&addressdetails=1)
 
@@ -358,7 +350,7 @@ This overrides the specified machine readable format.
 </searchresults>
 ```
 
-##### JSON with SVG polygon
+#### JSON with SVG polygon
 
 [https://nominatim.openstreetmap.org/search?q=Unter%20den%20Linden%201%20Berlin&format=json&addressdetails=1&limit=1&polygon_svg=1](https://nominatim.openstreetmap.org/search?q=Unter%20den%20Linden%201%20Berlin&format=json&addressdetails=1&limit=1&polygon_svg=1)
 

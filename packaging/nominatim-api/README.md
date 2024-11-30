@@ -28,10 +28,10 @@ package. Go to the project directory, then run uvicorn as:
 ## Documentation
 
 The full documentation for the Nominatim library can be found at:
-https://nominatim.org/release-docs/latest/library/Getting-Started/
+<https://nominatim.org/release-docs/latest/library/Getting-Started/>
 
 The v1 API of the server is documented at:
-https://nominatim.org/release-docs/latest/api/Overview/
+<https://nominatim.org/release-docs/latest/api/Overview/>
 
 ## License
 

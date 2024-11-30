@@ -21,7 +21,7 @@ download the next change, you can temporarily disable the update interval:
     NOMINATIM_REPLICATION_UPDATE_INTERVAL=0 nominatim replication --once
 
 If a configuration option is defined through .env file and environment
-variable, then the latter takes precedence. 
+variable, then the latter takes precedence.
 
 ## Configuration Parameter Reference
 
@@ -46,7 +46,6 @@ parameter that is understood by libpq. See the [Postgres documentation](https://
     [password file](https://www.postgresql.org/docs/current/libpq-pgpass.html)
     instead.
 
-
 #### NOMINATIM_DATABASE_WEBUSER
 
 | Summary            |                                                     |
@@ -63,7 +62,6 @@ needs to be set up before starting the import.
 Nominatim grants minimal rights to this user to all tables that are needed
 for running geocoding queries.
 
-
 #### NOMINATIM_TOKENIZER
 
 | Summary            |                                                     |
@@ -76,7 +74,6 @@ for running geocoding queries.
 Sets the tokenizer type to use for the import. For more information on
 available tokenizers and how they are configured, see
 [Tokenizers](../customize/Tokenizers.md).
-
 
 #### NOMINATIM_TOKENIZER_CONFIG
 
@@ -93,7 +90,6 @@ on the file format.
 
 If a relative path is given, then the file is searched first relative to the
 project directory and then in the global settings directory.
-
 
 #### NOMINATIM_LIMIT_REINDEXING
 
@@ -112,7 +108,6 @@ in the state to make the new name searchable in conjunction with addresses.
 Setting this option to 'yes' means that Nominatim skips reindexing of contained
 objects when the area becomes too large.
 
-
 #### NOMINATIM_LANGUAGES
 
 | Summary            |                                                     |
@@ -127,7 +122,6 @@ codes, to restrict import to a subset of languages.
 
 Currently only affects the initial import of country names and special phrases.
 
-
 #### NOMINATIM_USE_US_TIGER_DATA
 
 | Summary            |                                                     |
@@ -139,7 +133,6 @@ Currently only affects the initial import of country names and special phrases.
 
 When this setting is enabled, search and reverse queries also take data
 from [Tiger house number data](Tiger.md) into account.
-
 
 #### NOMINATIM_USE_AUX_LOCATION_DATA
 
@@ -154,8 +147,7 @@ from [Tiger house number data](Tiger.md) into account.
 When this setting is enabled, search queries also take data from external
 house number tables into account.
 
-*Warning:* This feature is currently unmaintained and should not be used.
-
+_Warning:_ This feature is currently unmaintained and should not be used.
 
 #### NOMINATIM_HTTP_PROXY
 
@@ -171,7 +163,6 @@ When this setting is enabled and at least
 configured proxy will be used, when downloading external data like
 replication diffs.
 
-
 #### NOMINATIM_HTTP_PROXY_HOST
 
 | Summary            |                                                     |
@@ -182,7 +173,6 @@ replication diffs.
 
 When [NOMINATIM_HTTP_PROXY](#nominatim_http_proxy) is enabled, this setting
 configures the proxy host name.
-
 
 #### NOMINATIM_HTTP_PROXY_PORT
 
@@ -195,7 +185,6 @@ configures the proxy host name.
 When [NOMINATIM_HTTP_PROXY](#nominatim_http_proxy) is enabled, this setting
 configures the port number to use with the proxy.
 
-
 #### NOMINATIM_HTTP_PROXY_LOGIN
 
 | Summary            |                                                     |
@@ -207,7 +196,6 @@ configures the port number to use with the proxy.
 When [NOMINATIM_HTTP_PROXY](#nominatim_http_proxy) is enabled, use this
 setting to define the username for proxies that require a login.
 
-
 #### NOMINATIM_HTTP_PROXY_PASSWORD
 
 | Summary            |                                                     |
@@ -218,7 +206,6 @@ setting to define the username for proxies that require a login.
 
 When [NOMINATIM_HTTP_PROXY](#nominatim_http_proxy) is enabled, use this
 setting to define the password for proxies that require a login.
-
 
 #### NOMINATIM_OSM2PGSQL_BINARY
 
@@ -235,7 +222,6 @@ osm2pgsql that is guaranteed to be compatible. Use this setting to use
 a different binary instead. You should do this only when you know exactly
 what you are doing. If the osm2pgsql version is not compatible, then the
 result is undefined.
-
 
 #### NOMINATIM_WIKIPEDIA_DATA_PATH
 
@@ -263,7 +249,6 @@ are and what the configuration file must look like.
 
 When a relative path is given, then the file is searched first relative to the
 project directory and then in the global settings directory.
-
 
 #### NOMINATIM_IMPORT_STYLE
 
@@ -309,7 +294,6 @@ relative to the project directory.
     when adding new data with `nominatim add-data` or `nominatim replication`.
     Make sure you keep the flatnode file around and this setting unmodified,
     if you plan to add more data or run regular updates.
-
 
 #### NOMINATIM_TABLESPACE_*
 
@@ -360,7 +344,6 @@ NOMINATIM_TABLESPACE_AUX_DATA
 NOMINATIM_TABLESPACE_AUX_INDEX
 :    Indexes on auxiliary data tables.
 
-
 ### Replication Update Settings
 
 #### NOMINATIM_REPLICATION_URL
@@ -369,7 +352,7 @@ NOMINATIM_TABLESPACE_AUX_INDEX
 | --------------     | --------------------------------------------------- |
 | **Description:**   | Base URL of the replication service |
 | **Format:**        | url |
-| **Default:**       | https://planet.openstreetmap.org/replication/minute |
+| **Default:**       | <https://planet.openstreetmap.org/replication/minute> |
 | **After Changes:** | run `nominatim replication --init` |
 
 Replication services deliver updates to OSM data. Use this setting to choose
@@ -402,7 +385,6 @@ the setting can easily be changed temporarily on the command line:
 
     NOMINATIM_REPLICATION_MAX_DIFF=3000 nominatim replication
 
-
 #### NOMINATIM_REPLICATION_UPDATE_INTERVAL
 
 | Summary            |                                                     |
@@ -416,7 +398,6 @@ This setting determines when Nominatim will attempt to download again a new
 update. The time is computed from the publication date of the last diff
 downloaded. Setting this to a slightly higher value than the actual
 publication interval avoids unnecessary rechecks.
-
 
 #### NOMINATIM_REPLICATION_RECHECK_INTERVAL
 
@@ -471,7 +452,6 @@ want the URL to be included in API responses, make the `/mapicon`
 directory of the project available under a public URL and point this setting
 to the directory.
 
-
 #### NOMINATIM_DEFAULT_LANGUAGE
 
 | Summary            |                                                     |
@@ -489,7 +469,6 @@ given, it falls back to this setting. If the setting is also empty, then
 the local languages (in OSM: the name tag without any language suffix) is
 used.
 
-
 #### NOMINATIM_LOOKUP_MAX_COUNT
 
 | Summary            |                                                     |
@@ -502,7 +481,6 @@ used.
 The /lookup point accepts list of ids to look up address details for. This
 setting restricts the number of places a user may look up with a single
 request.
-
 
 #### NOMINATIM_POLYGON_OUTPUT_MAX_TYPES
 
@@ -521,7 +499,6 @@ with a single query.
 
 Setting this parameter to 0 disables polygon output completely.
 
-
 #### NOMINATIM_SEARCH_WITHIN_COUNTRIES
 
 | Summary            |                                                     |
@@ -537,7 +514,6 @@ When enabled, if, despite not finding a point within the static grid of countrie
 finds a geometry of a region, do not return the geometry.
 Return "Unable to geocode" instead.
 
-
 #### NOMINATIM_SERVE_LEGACY_URLS
 
 | Summary            |                                                     |
@@ -550,7 +526,6 @@ Return "Unable to geocode" instead.
 When enabled, then endpoints are reachable as `/<name>` as well as `/<name>.php`.
 This can be useful when you want to be backwards-compatible with previous
 versions of Nominatim.
-
 
 #### NOMINATIM_API_POOL_SIZE
 
@@ -584,7 +559,6 @@ timeout exceptions. Users of the API see a 503 HTTP error.
 The timeout does ont apply when using the
 [low-level DB access](../library/Low-Level-DB-Access.md)
 of the library. A timeout can be manually set, if required.
-
 
 #### NOMINATIM_REQUEST_TIMEOUT
 
@@ -634,7 +608,6 @@ Can be used as the same time as NOMINATIM_LOG_FILE.
 Enable logging of requests into a file with this setting by setting the log
 file where to log to. A relative file name is assumed to be relative to
 the project directory.
-
 
 The entries in the log file have the following format:
 

@@ -4,12 +4,12 @@ The API classes are the core object of the search library. Always instantiate
 one of these classes first. The API classes are **not threadsafe**. You need
 to instantiate a separate instance for each thread.
 
-### NominatimAPI
+## NominatimAPI
 
 ::: nominatim_api.NominatimAPI
     options:
         members:
-            - __init__
+            - **init**
             - config
             - close
             - status
@@ -22,13 +22,12 @@ to instantiate a separate instance for each thread.
         heading_level: 6
         group_by_category: False
 
-
 ### NominatimAPIAsync
 
 ::: nominatim_api.NominatimAPIAsync
     options:
         members:
-            - __init__
+            - **init**
             - setup_database
             - close
             - begin

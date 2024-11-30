@@ -19,13 +19,15 @@ assignees: ''
 <!-- Please describe what you did to get to the issue. -->
 
 **Software Environment (please complete the following information):**
-- Nominatim version: 
-- Postgresql version: 
+
+- Nominatim version:
+- Postgresql version:
 - Postgis version:
-- OS: 
+- OS:
 
 **Hardware Configuration (please complete the following information):**
-- RAM: 
+
+- RAM:
 - number of CPUs:
 - type and size of disks:
 

@@ -2,7 +2,7 @@
 
 ## Reporting Bugs
 
-Bugs can be reported at https://github.com/openstreetmap/Nominatim/issues.
+Bugs can be reported at <https://github.com/openstreetmap/Nominatim/issues>.
 Please always open a separate issue for each problem. In particular, do
 not add your bugs to closed issues. They may looks similar to you but
 often are completely different from the maintainer's point of view.
@@ -12,7 +12,7 @@ often are completely different from the maintainer's point of view.
 We love to get pull requests from you. We operate the "Fork & Pull" model
 explained at
 
-https://help.github.com/articles/using-pull-requests
+<https://help.github.com/articles/using-pull-requests>
 
 You should fork the project into your own repo, create a topic branch
 there and then make one or more pull requests back to the openstreetmap repository.
@@ -42,22 +42,21 @@ description or in documentation need to
    sufficient. You need to show that the code actually solves the problem
    the PR claims to solve.
 
-
 ## Coding style
 
 Nominatim historically hasn't followed a particular coding style but we
 are in process of consolidating the style. The following rules apply:
 
- * Python code uses the official Python style
- * indentation
-   * SQL use 2 spaces
-   * all other file types use 4 spaces
-   * [BSD style](https://en.wikipedia.org/wiki/Indent_style#Allman_style) for braces
- * spaces
-   * spaces before and after equal signs and operators
-   * no trailing spaces
-   * no spaces after opening and before closing bracket
-   * leave out space between a function name and bracket
+* Python code uses the official Python style
+* indentation
+  * SQL use 2 spaces
+  * all other file types use 4 spaces
+  * [BSD style](https://en.wikipedia.org/wiki/Indent_style#Allman_style) for braces
+* spaces
+  * spaces before and after equal signs and operators
+  * no trailing spaces
+  * no spaces after opening and before closing bracket
+  * leave out space between a function name and bracket
      but add one between control statement(if, while, etc.) and bracket
 
 The coding style is enforced with flake8. It can be tested with:
@@ -102,11 +101,11 @@ Checklist for releases:
   * `rm -r .git*`
   * copy country data into `data/`
   * add version to base directory and package
-* [ ] upload tarball to https://nominatim.org
+* [ ] upload tarball to <https://nominatim.org>
 * [ ] prepare documentation
   * check out new docs branch
   * change git checkout instructions to tarball download instructions or adapt version on existing ones
-  * build documentation and copy to https://github.com/osm-search/nominatim-org-site
+  * build documentation and copy to <https://github.com/osm-search/nominatim-org-site>
   * add new version to history
 * [ ] check release tarball
   * download tarball as per new documentation instructions

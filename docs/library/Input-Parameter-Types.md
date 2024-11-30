@@ -53,7 +53,6 @@ Layers allow to restrict the search result to thematic groups. This is
 orthogonal to restriction by address ranks, which groups places by their
 geographic extent.
 
-
 ::: nominatim_api.DataLayer
     options:
         heading_level: 6

@@ -7,23 +7,20 @@
 """
 Tests for tools.exec_utils module.
 """
-from pathlib import Path
-import subprocess
 
-import pytest
 
-from nominatim_db.config import Configuration
 import nominatim_db.tools.exec_utils as exec_utils
 
+
 def test_run_osm2pgsql(osm2pgsql_options):
-    osm2pgsql_options['append'] = False
-    osm2pgsql_options['import_file'] = 'foo.bar'
-    osm2pgsql_options['tablespaces']['slim_data'] = 'extra'
+    osm2pgsql_options["append"] = False
+    osm2pgsql_options["import_file"] = "foo.bar"
+    osm2pgsql_options["tablespaces"]["slim_data"] = "extra"
     exec_utils.run_osm2pgsql(osm2pgsql_options)
 
 
 def test_run_osm2pgsql_disable_jit(osm2pgsql_options):
-    osm2pgsql_options['append'] = True
-    osm2pgsql_options['import_file'] = 'foo.bar'
-    osm2pgsql_options['disable_jit'] = True
+    osm2pgsql_options["append"] = True
+    osm2pgsql_options["import_file"] = "foo.bar"
+    osm2pgsql_options["disable_jit"] = True
     exec_utils.run_osm2pgsql(osm2pgsql_options)

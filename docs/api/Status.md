@@ -17,7 +17,6 @@ https://nominatim.openstreetmap.org/status
     `https://nominatim.openstreetmap.org/status.php`. This is now deprecated
     and will be removed in future versions.
 
-
 ## Parameters
 
 The status endpoint takes a single optional parameter:
@@ -28,17 +27,14 @@ The status endpoint takes a single optional parameter:
 
 Selects the output format. See below.
 
-
 ## Output
 
-#### Text format
+### Text format
 
 When everything is okay, a status code 200 is returned and a simple message: `OK`
 
 On error it will return HTTP status code 500 and print a detailed error message, e.g.
 `ERROR: Database connection failed`.
-
-
 
 #### JSON format
 

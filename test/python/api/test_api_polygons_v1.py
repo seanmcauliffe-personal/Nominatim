@@ -9,23 +9,26 @@ Tests for the deletable v1 API call.
 """
 import json
 import datetime as dt
-from pathlib import Path
 
 import pytest
 
-from fake_adaptor import FakeAdaptor, FakeError, FakeResponse
+from fake_adaptor import FakeAdaptor
 
 import nominatim_api.v1.server_glue as glue
+
 
 class TestPolygonsEndPoint:
 
     @pytest.fixture(autouse=True)
-    def setup_deletable_table(self, temp_db_cursor, table_factory, temp_db_with_extensions):
+    def setup_deletable_table(
+        self, temp_db_cursor, table_factory, temp_db_with_extensions
+    ):
         self.now = dt.datetime.now()
         self.recent = dt.datetime.now() - dt.timedelta(days=3)
 
-        table_factory('import_polygon_error',
-                      definition="""osm_id bigint,
+        table_factory(
+            "import_polygon_error",
+            definition="""osm_id bigint,
                                     osm_type character(1),
                                     class text,
                                     type text,
@@ -35,13 +38,33 @@ class TestPolygonsEndPoint:
                                     errormessage text,
                                     prevgeometry geometry(Geometry,4326),
                                     newgeometry geometry(Geometry,4326)""",
-                    content=[(345, 'N', 'boundary', 'administrative',
-                              {'name': 'Foo'}, 'xx', self.recent,
-                              'some text', None, None),
-                             (781, 'R', 'landuse', 'wood',
-                              None, 'ds', self.now,
-                              'Area reduced by lots', None, None)])
-
+            content=[
+                (
+                    345,
+                    "N",
+                    "boundary",
+                    "administrative",
+                    {"name": "Foo"},
+                    "xx",
+                    self.recent,
+                    "some text",
+                    None,
+                    None,
+                ),
+                (
+                    781,
+                    "R",
+                    "landuse",
+                    "wood",
+                    None,
+                    "ds",
+                    self.now,
+                    "Area reduced by lots",
+                    None,
+                    None,
+                ),
+            ],
+        )
 
     @pytest.mark.asyncio
     async def test_polygons_simple(self, api):
@@ -50,49 +73,57 @@ class TestPolygonsEndPoint:
         resp = await glue.polygons_endpoint(api, a)
         results = json.loads(resp.output)
 
-        results.sort(key=lambda r: (r['osm_type'], r['osm_id']))
+        results.sort(key=lambda r: (r["osm_type"], r["osm_id"]))
 
-        assert results == [{'osm_type': 'N', 'osm_id': 345,
-                            'class': 'boundary', 'type': 'administrative',
-                            'name': 'Foo', 'country_code': 'xx',
-                            'errormessage': 'some text',
-                            'updated': self.recent.isoformat(sep=' ', timespec='seconds')},
-                           {'osm_type': 'R', 'osm_id': 781,
-                            'class': 'landuse', 'type': 'wood',
-                            'name': None, 'country_code': 'ds',
-                            'errormessage': 'Area reduced by lots',
-                            'updated': self.now.isoformat(sep=' ', timespec='seconds')}]
-
+        assert results == [
+            {
+                "osm_type": "N",
+                "osm_id": 345,
+                "class": "boundary",
+                "type": "administrative",
+                "name": "Foo",
+                "country_code": "xx",
+                "errormessage": "some text",
+                "updated": self.recent.isoformat(sep=" ", timespec="seconds"),
+            },
+            {
+                "osm_type": "R",
+                "osm_id": 781,
+                "class": "landuse",
+                "type": "wood",
+                "name": None,
+                "country_code": "ds",
+                "errormessage": "Area reduced by lots",
+                "updated": self.now.isoformat(sep=" ", timespec="seconds"),
+            },
+        ]
 
     @pytest.mark.asyncio
     async def test_polygons_days(self, api):
         a = FakeAdaptor()
-        a.params['days'] = '2'
+        a.params["days"] = "2"
 
         resp = await glue.polygons_endpoint(api, a)
         results = json.loads(resp.output)
 
-        assert [r['osm_id'] for r in results] == [781]
-
+        assert [r["osm_id"] for r in results] == [781]
 
     @pytest.mark.asyncio
     async def test_polygons_class(self, api):
         a = FakeAdaptor()
-        a.params['class'] = 'landuse'
+        a.params["class"] = "landuse"
 
         resp = await glue.polygons_endpoint(api, a)
         results = json.loads(resp.output)
 
-        assert [r['osm_id'] for r in results] == [781]
-
-
+        assert [r["osm_id"] for r in results] == [781]
 
     @pytest.mark.asyncio
     async def test_polygons_reduced(self, api):
         a = FakeAdaptor()
-        a.params['reduced'] = '1'
+        a.params["reduced"] = "1"
 
         resp = await glue.polygons_endpoint(api, a)
         results = json.loads(resp.output)
 
-        assert [r['osm_id'] for r in results] == [781]
+        assert [r["osm_id"] for r in results] == [781]

@@ -40,7 +40,7 @@ all commands from the project directory.
 
 ### Configuration setup in `.env`
 
-The Nominatim server can be customized via an `.env` configuration file in the 
+The Nominatim server can be customized via an `.env` configuration file in the
 project directory. This is a file in [dotenv](https://github.com/theskumar/python-dotenv)
 format which looks the same as variable settings in a standard shell environment.
 You can also set the same configuration via environment variables. All
@@ -148,7 +148,6 @@ database or reuse the space later.
     Do a normal import, add the external data and once you are done with
     everything run `nominatim freeze`.
 
-
 ### Reverse-only Imports
 
 If you only want to use the Nominatim database for reverse lookups or
@@ -228,7 +227,7 @@ configuration as it may not be optimal for the import.
 
 In the first step of the import Nominatim uses [osm2pgsql](https://osm2pgsql.org)
 to load the OSM data into the PostgreSQL database. This step is very demanding
-in terms of RAM usage. osm2pgsql and PostgreSQL are running in parallel at 
+in terms of RAM usage. osm2pgsql and PostgreSQL are running in parallel at
 this point. PostgreSQL blocks at least the part of RAM that has been configured
 with the `shared_buffers` parameter during
 [PostgreSQL tuning](Installation.md#tuning-the-postgresql-database)
@@ -246,7 +245,6 @@ the size of the OSM pbf file you are importing. The size needs to be given in
 MB. Make sure you leave enough RAM for PostgreSQL and osm2pgsql as mentioned
 above. If the system starts swapping or you are getting out-of-memory errors,
 reduce the cache size or even consider using a flatnode file.
-
 
 ### Testing the installation
 
@@ -298,7 +296,6 @@ Do not use this test server in production.
 To run Nominatim via webservers like Apache or nginx, please continue reading
 [Deploy the Python frontend](Deployment-Python.md).
 
-
 ## Enabling search by category phrases
 
 To be able to search for places by their type using
@@ -312,5 +309,5 @@ nominatim special-phrases --import-from-wiki
 Note that this command downloads the phrases from the wiki link above. You
 need internet access for the step.
 
-You can also import special phrases from a csv file, for more 
+You can also import special phrases from a csv file, for more
 information please see the [Customization part](../customize/Special-Phrases.md).

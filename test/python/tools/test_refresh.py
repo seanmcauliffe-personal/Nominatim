@@ -14,76 +14,97 @@ import pytest
 from nominatim_db.tools import refresh
 from nominatim_db.db.connection import postgis_version_tuple
 
+
 def test_refresh_import_wikipedia_not_existing(dsn):
-    assert refresh.import_wikipedia_articles(dsn, Path('.')) == 1
+    assert refresh.import_wikipedia_articles(dsn, Path(".")) == 1
 
 
 def test_refresh_import_secondary_importance_non_existing(dsn):
-    assert refresh.import_secondary_importance(dsn, Path('.')) == 1
+    assert refresh.import_secondary_importance(dsn, Path(".")) == 1
 
-def test_refresh_import_secondary_importance_testdb(dsn, src_dir, temp_db_conn, temp_db_cursor):
-    temp_db_cursor.execute('CREATE EXTENSION postgis')
+
+def test_refresh_import_secondary_importance_testdb(
+    dsn, src_dir, temp_db_conn, temp_db_cursor
+):
+    temp_db_cursor.execute("CREATE EXTENSION postgis")
 
     if postgis_version_tuple(temp_db_conn)[0] < 3:
-        assert refresh.import_secondary_importance(dsn, src_dir / 'test' / 'testdb') > 0
+        assert refresh.import_secondary_importance(dsn, src_dir / "test" / "testdb") > 0
     else:
-        temp_db_cursor.execute('CREATE EXTENSION postgis_raster')
-        assert refresh.import_secondary_importance(dsn, src_dir / 'test' / 'testdb') == 0
+        temp_db_cursor.execute("CREATE EXTENSION postgis_raster")
+        assert (
+            refresh.import_secondary_importance(dsn, src_dir / "test" / "testdb") == 0
+        )
 
-        assert temp_db_cursor.table_exists('secondary_importance')
+        assert temp_db_cursor.table_exists("secondary_importance")
 
 
 @pytest.mark.parametrize("replace", (True, False))
 def test_refresh_import_wikipedia(dsn, src_dir, table_factory, temp_db_cursor, replace):
     if replace:
-        table_factory('wikimedia_importance')
+        table_factory("wikimedia_importance")
 
     # use the small wikipedia file for the API testdb
-    assert refresh.import_wikipedia_articles(dsn, src_dir / 'test' / 'testdb') == 0
+    assert refresh.import_wikipedia_articles(dsn, src_dir / "test" / "testdb") == 0
 
-    assert temp_db_cursor.table_rows('wikipedia_article') > 0
-    assert temp_db_cursor.table_rows('wikipedia_redirect') > 0
+    assert temp_db_cursor.table_rows("wikipedia_article") > 0
+    assert temp_db_cursor.table_rows("wikipedia_redirect") > 0
 
 
-def test_recompute_importance(placex_table, table_factory, temp_db_conn, temp_db_cursor):
-    temp_db_cursor.execute("""CREATE OR REPLACE FUNCTION compute_importance(extratags HSTORE,
+def test_recompute_importance(
+    placex_table, table_factory, temp_db_conn, temp_db_cursor
+):
+    temp_db_cursor.execute(
+        """CREATE OR REPLACE FUNCTION compute_importance(extratags HSTORE,
                                               country_code varchar(2),
                                               rank_search SMALLINT,
                                               centroid GEOMETRY,
                                               OUT importance FLOAT,
                                               OUT wikipedia TEXT)
-                               AS $$ SELECT 0.1::float, 'foo'::text $$ LANGUAGE SQL""")
+                               AS $$ SELECT 0.1::float, 'foo'::text $$ LANGUAGE SQL"""
+    )
 
     refresh.recompute_importance(temp_db_conn)
 
 
-@pytest.mark.parametrize('osm_type', ('N', 'W', 'R'))
-def test_invalidate_osm_object_simple(placex_table, osm_type, temp_db_conn, temp_db_cursor):
+@pytest.mark.parametrize("osm_type", ("N", "W", "R"))
+def test_invalidate_osm_object_simple(
+    placex_table, osm_type, temp_db_conn, temp_db_cursor
+):
     placex_table.add(osm_type=osm_type, osm_id=57283)
 
     refresh.invalidate_osm_object(osm_type, 57283, temp_db_conn, recursive=False)
     temp_db_conn.commit()
 
-    assert 2 == temp_db_cursor.scalar("""SELECT indexed_status FROM placex
+    assert 2 == temp_db_cursor.scalar(
+        """SELECT indexed_status FROM placex
                                          WHERE osm_type = %s and osm_id = %s""",
-                                      (osm_type, 57283))
+        (osm_type, 57283),
+    )
 
 
-def test_invalidate_osm_object_nonexisting_simple(placex_table, temp_db_conn, temp_db_cursor):
-    placex_table.add(osm_type='W', osm_id=57283)
+def test_invalidate_osm_object_nonexisting_simple(
+    placex_table, temp_db_conn, temp_db_cursor
+):
+    placex_table.add(osm_type="W", osm_id=57283)
 
-    refresh.invalidate_osm_object('N', 57283, temp_db_conn, recursive=False)
+    refresh.invalidate_osm_object("N", 57283, temp_db_conn, recursive=False)
     temp_db_conn.commit()
 
-    assert 0 == temp_db_cursor.scalar("""SELECT count(*) FROM placex
-                                         WHERE indexed_status > 0""")
+    assert 0 == temp_db_cursor.scalar(
+        """SELECT count(*) FROM placex
+                                         WHERE indexed_status > 0"""
+    )
 
 
-@pytest.mark.parametrize('osm_type', ('N', 'W', 'R'))
-def test_invalidate_osm_object_recursive(placex_table, osm_type, temp_db_conn, temp_db_cursor):
+@pytest.mark.parametrize("osm_type", ("N", "W", "R"))
+def test_invalidate_osm_object_recursive(
+    placex_table, osm_type, temp_db_conn, temp_db_cursor
+):
     placex_table.add(osm_type=osm_type, osm_id=57283)
 
-    temp_db_cursor.execute("""CREATE OR REPLACE FUNCTION place_force_update(placeid BIGINT)
+    temp_db_cursor.execute(
+        """CREATE OR REPLACE FUNCTION place_force_update(placeid BIGINT)
                               RETURNS BOOLEAN AS $$
                               BEGIN
                                 UPDATE placex SET indexed_status = 522
@@ -91,11 +112,14 @@ def test_invalidate_osm_object_recursive(placex_table, osm_type, temp_db_conn, t
                                 RETURN TRUE;
                               END;
                               $$
-                              LANGUAGE plpgsql;""")
+                              LANGUAGE plpgsql;"""
+    )
 
     refresh.invalidate_osm_object(osm_type, 57283, temp_db_conn)
     temp_db_conn.commit()
 
-    assert 522 == temp_db_cursor.scalar("""SELECT indexed_status FROM placex
+    assert 522 == temp_db_cursor.scalar(
+        """SELECT indexed_status FROM placex
                                            WHERE osm_type = %s and osm_id = %s""",
-                                        (osm_type, 57283))
+        (osm_type, 57283),
+    )

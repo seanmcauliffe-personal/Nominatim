@@ -3,7 +3,7 @@
 This document describes how you can install Nominatim inside a Ubuntu 24
 virtual machine on your desktop/laptop (host machine). The goal is to give
 you a development environment to easily edit code and run the test suite
-without affecting the rest of your system. 
+without affecting the rest of your system
 
 The installation can run largely unsupervised. You should expect 1h from
 start to finish depending on how fast your computer and download speed
@@ -44,8 +44,6 @@ is.
 
         dropdb --if-exists nominatim
 
-
-
 ## Development
 
 Vagrant maps the virtual machine's port 8089 to your host machine. Thus you can
@@ -61,17 +59,16 @@ In the Python BDD test you can use `logger.info()` for temporary debug
 statements.
 
 For more information on running tests, see
-https://nominatim.org/release-docs/develop/develop/Testing/
-
+<https://nominatim.org/release-docs/develop/develop/Testing/>
 
 ## FAQ
 
-##### Will it run on Windows?
+### Will it run on Windows?
 
 Yes, Vagrant and Virtualbox can be installed on MS Windows just fine. You need
 a 64bit version of Windows.
 
-##### Will it run on Apple Silicon?
+#### Will it run on Apple Silicon?
 
 You might need to replace Virtualbox with [Parallels](https://www.parallels.com/products/desktop/).
 There is no free/open source version of Parallels.
@@ -124,7 +121,6 @@ you edit `.env` file with
 
 To access postgres directly remember to specify the hostname,
 e.g. `psql --host localhost --port 9999 nominatim_it`
-
 
 ##### My computer is slow and the import takes too long. Can I start the virtual machine "in the cloud"?
 

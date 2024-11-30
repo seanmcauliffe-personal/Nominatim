@@ -144,6 +144,6 @@ between letters and digits.
 There are some other configuration files where you can set localized settings
 according to the assigned country. These are:
 
- * [Place ranking configuration](Ranking.md)
+* [Place ranking configuration](Ranking.md)
 
 Please see the linked documentation sections for more information.

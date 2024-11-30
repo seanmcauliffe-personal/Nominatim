@@ -1,572 +1,577 @@
 4.5.0
- * allow building Nominatim as a pip package
- * make osm2pgsql building optional
- * switch importer to psycopg3
- * allow output format of web search to be customized in self-installations
- * look up potential postcode areas for postcode results
- * add word usage statistics for address terms
- * implement more light-weight CSV format for wiki importance tables
- * rewrite SQL for place search to use window functions
- * increase search radius when filtering by postcode
- * prefer POI points over POI areas
- * reintroduce full terms for address terms in search_name table
- * reindex postcodes when their parent is deleted
- * indexing: precompute counts of affected rows
- * ensure consistent country assignments for overlapping countries
- * make Nominatim[Async]API context manager to ensure proper calling of
+
+* allow building Nominatim as a pip package
+* make osm2pgsql building optional
+* switch importer to psycopg3
+* allow output format of web search to be customized in self-installations
+* look up potential postcode areas for postcode results
+* add word usage statistics for address terms
+* implement more light-weight CSV format for wiki importance tables
+* rewrite SQL for place search to use window functions
+* increase search radius when filtering by postcode
+* prefer POI points over POI areas
+* reintroduce full terms for address terms in search_name table
+* reindex postcodes when their parent is deleted
+* indexing: precompute counts of affected rows
+* ensure consistent country assignments for overlapping countries
+* make Nominatim[Async]API context manager to ensure proper calling of
    close()
- * make usage of project dir optional for library
- * drop interpolations when no parent can be found
- * style tweaks to reflect OSM usage (man_made, highway and others)
- * deprecation of: bundled osm2pgsql, legacy tokenizer, PHP frontend
- * make documentation buildable without CMake
- * various fixes and improvements to documentation
+* make usage of project dir optional for library
+* drop interpolations when no parent can be found
+* style tweaks to reflect OSM usage (man_made, highway and others)
+* deprecation of: bundled osm2pgsql, legacy tokenizer, PHP frontend
+* make documentation buildable without CMake
+* various fixes and improvements to documentation
 
 4.4.1
- * fix geocodejson output: admin level output should only print boundaries
- * updating: restrict invalidation of child objects on large street features
- * restrict valid interpolation house numbers to 0-999999
- * fix import error when SQLAlchemy 1.4 and psycopg3 are installed
- * various typo fixes in the documentation
+
+* fix geocodejson output: admin level output should only print boundaries
+* updating: restrict invalidation of child objects on large street features
+* restrict valid interpolation house numbers to 0-999999
+* fix import error when SQLAlchemy 1.4 and psycopg3 are installed
+* various typo fixes in the documentation
 
 4.4.0
- * add export to SQLite database and SQLite support for the frontend
- * switch to Python frontend as the default frontend
- * update to osm2pgsql 1.11.0
- * add support for new osm2pgsql middle table format
- * simplify geometry for large polygon objects not used in addresses
- * various performance tweaks for search in Python frontend
- * fix regression in search with categories where it was confused with near
+
+* add export to SQLite database and SQLite support for the frontend
+* switch to Python frontend as the default frontend
+* update to osm2pgsql 1.11.0
+* add support for new osm2pgsql middle table format
+* simplify geometry for large polygon objects not used in addresses
+* various performance tweaks for search in Python frontend
+* fix regression in search with categories where it was confused with near
    search
- * partially roll back use of SQLAlchemy lambda statements due to bugs
+* partially roll back use of SQLAlchemy lambda statements due to bugs
    in SQLAlchemy
- * fix handling of timezones for timestamps from the database
- * fix handling of full address searches in connection with a viewbox
- * fix postcode computation of highway areas
- * fix handling of timeout errors for Python <= 3.10
- * fix address computation for postcode areas
- * fix variable shadowing in osm2pgsql flex script, causing bugs with LuaJIT
- * make sure extratags are always null when empty
- * reduce importance of places without wikipedia reference
- * improve performance of word count computations
- * drop support for wikipedia tags with full URLs
- * replace get_addressdata() SQL implementation with a Python function
- * improve display name for non-address features
- * fix postcode validation for postcodes with country code
+* fix handling of timezones for timestamps from the database
+* fix handling of full address searches in connection with a viewbox
+* fix postcode computation of highway areas
+* fix handling of timeout errors for Python <= 3.10
+* fix address computation for postcode areas
+* fix variable shadowing in osm2pgsql flex script, causing bugs with LuaJIT
+* make sure extratags are always null when empty
+* reduce importance of places without wikipedia reference
+* improve performance of word count computations
+* drop support for wikipedia tags with full URLs
+* replace get_addressdata() SQL implementation with a Python function
+* improve display name for non-address features
+* fix postcode validation for postcodes with country code
    (thanks @pawel-wroniszewski)
- * add possibility to run imports without superuser database rights
+* add possibility to run imports without superuser database rights
    (thanks @robbe-haesendonck)
- * new CLI command for cleaning deleted relations (thanks @lujoh)
- * add check for database version in the CLI check command
- * updates to import styles ignoring more unused objects
- * various typo fixes (thanks @kumarUjjawal)
+* new CLI command for cleaning deleted relations (thanks @lujoh)
+* add check for database version in the CLI check command
+* updates to import styles ignoring more unused objects
+* various typo fixes (thanks @kumarUjjawal)
 
 4.3.2
- * fix potential SQL injection issue for 'nominatim admin --collect-os-info'
- * PHP frontend: fix on-the-fly lookup of postcode areas near boundaries
- * Python frontend: improve handling of viewbox
- * Python frontend: correct deployment instructions
+
+* fix potential SQL injection issue for 'nominatim admin --collect-os-info'
+* PHP frontend: fix on-the-fly lookup of postcode areas near boundaries
+* Python frontend: improve handling of viewbox
+* Python frontend: correct deployment instructions
 
 4.3.1
- * reintroduce result rematching
- * improve search of multi-part names
- * fix accidentally switched meaning of --reverse-only and --search-only in
+
+* reintroduce result rematching
+* improve search of multi-part names
+* fix accidentally switched meaning of --reverse-only and --search-only in
    warm command
 
 4.3.0
- * fix failing importance recalculation command
- * fix merging of linked names into unnamed boundaries
- * fix a number of corner cases with interpolation splitting resulting in
+
+* fix failing importance recalculation command
+* fix merging of linked names into unnamed boundaries
+* fix a number of corner cases with interpolation splitting resulting in
    invalid geometries
- * fix failure in website generation when password contains curly brackets
- * fix broken use of ST_Project in PostGIS 3.4
- * new NOMINATIM_SEARCH_WITHIN_COUNTRIES setting to restrict reverse lookups
+* fix failure in website generation when password contains curly brackets
+* fix broken use of ST_Project in PostGIS 3.4
+* new NOMINATIM_SEARCH_WITHIN_COUNTRIES setting to restrict reverse lookups
    to known countries (thanks @alfmarcua)
- * allow negative OSM IDs (thanks @alfmarcua)
- * disallow import of Tiger data in a frozen DB
- * avoid UPDATE to change settings to be compatible with r/o DBs (thanks @t-tomek)
- * update bundled osm2pgsql to 1.9.2
- * reorganise osm2pgsql flex style and make it the default
- * exclude names ending in :wikipedia from indexing
- * no longer accept comma as a list separator in name tags
- * process forward dependencies on update to catch updates in geometries
+* allow negative OSM IDs (thanks @alfmarcua)
+* disallow import of Tiger data in a frozen DB
+* avoid UPDATE to change settings to be compatible with r/o DBs (thanks @t-tomek)
+* update bundled osm2pgsql to 1.9.2
+* reorganise osm2pgsql flex style and make it the default
+* exclude names ending in :wikipedia from indexing
+* no longer accept comma as a list separator in name tags
+* process forward dependencies on update to catch updates in geometries
    of ways and relations
- * fix handling of isolated silent letters during transliteration
- * no longer assign postcodes to large linear features like rivers
- * introduce nominatim.paths module for finding data and libraries
- * documentation layout changed to material theme
- * new documentation section for library
- * various smaller fixes to existing documentation
+* fix handling of isolated silent letters during transliteration
+* no longer assign postcodes to large linear features like rivers
+* introduce nominatim.paths module for finding data and libraries
+* documentation layout changed to material theme
+* new documentation section for library
+* various smaller fixes to existing documentation
    (thanks @woodpeck, @bloom256, @biswajit-k)
- * updates to vagrant install scripts, drop support for Ubuntu 18
+* updates to vagrant install scripts, drop support for Ubuntu 18
    (thanks @n-timofeev)
- * removed obsolete configuration variables from env.defaults
- * add script for generating a taginfo description (thanks @biswajit-k)
- * modernize Python code around BDD test and add testing of Python frontend
- * lots of new BDD tests for API output
+* removed obsolete configuration variables from env.defaults
+* add script for generating a taginfo description (thanks @biswajit-k)
+* modernize Python code around BDD test and add testing of Python frontend
+* lots of new BDD tests for API output
 
 4.2.3
 
- * fix deletion handling for 'nominatim add-data'
- * adapt place_force_delete() to new deletion handling
- * flex style: avoid dropping of postcode areas
- * fix update errors on address interpolation handling
+* fix deletion handling for 'nominatim add-data'
+* adapt place_force_delete() to new deletion handling
+* flex style: avoid dropping of postcode areas
+* fix update errors on address interpolation handling
 
 4.2.2
 
- * extend flex-style library to fully support all default styles
- * fix handling of Hebrew aleph
- * do not assign postcodes to rivers
- * fix string matching in PHP code
- * update osm2pgsql (various updates to flex)
- * fix slow query when deleting places on update
- * fix CLI details query
- * fix recalculation of importance values
- * fix polygon simplification in reverse results
- * add class/type information to reverse geocodejson result
- * minor improvements to default tokenizer configuration
- * various smaller fixes to documentation
+* extend flex-style library to fully support all default styles
+* fix handling of Hebrew aleph
+* do not assign postcodes to rivers
+* fix string matching in PHP code
+* update osm2pgsql (various updates to flex)
+* fix slow query when deleting places on update
+* fix CLI details query
+* fix recalculation of importance values
+* fix polygon simplification in reverse results
+* add class/type information to reverse geocodejson result
+* minor improvements to default tokenizer configuration
+* various smaller fixes to documentation
 
 4.2.1
 
- * fix XSS vulnerability in debug view
+* fix XSS vulnerability in debug view
 
 4.2.0
 
- * add experimental support for osm2pgsql flex style
- * introduce secondary importance value to be retrieved from a raster data file
+* add experimental support for osm2pgsql flex style
+* introduce secondary importance value to be retrieved from a raster data file
    (currently still unused, to replace address importance, thanks to @tareqpi)
- * add new report tool `nominatim admin --collect-os-info`
+* add new report tool `nominatim admin --collect-os-info`
    (thanks @micahcochran, @tareqpi)
- * reorganise index to improve lookup performance and size
- * run index creation after import in parallel
- * run ANALYZE more selectively to speed up continuation of indexing
- * fix crash on update when addr:interpolation receives an illegal value
- * fix minimum number of retrieved results to be at least 10
- * fix search for combinations of special term + name (e.g Hotel Bellevue)
- * do not return interpolations without a parent street on reverse search
- * improve invalidation of linked places on updates
- * fix address parsing for interpolation lines
- * make sure socket timeouts are respected during replication
+* reorganise index to improve lookup performance and size
+* run index creation after import in parallel
+* run ANALYZE more selectively to speed up continuation of indexing
+* fix crash on update when addr:interpolation receives an illegal value
+* fix minimum number of retrieved results to be at least 10
+* fix search for combinations of special term + name (e.g Hotel Bellevue)
+* do not return interpolations without a parent street on reverse search
+* improve invalidation of linked places on updates
+* fix address parsing for interpolation lines
+* make sure socket timeouts are respected during replication
    (working around a bug in some versions of pyosmium)
- * update bundled osm2pgsql to 1.7.1
- * add support for PostgreSQL 15
- * typing fixes to work with latest type annotations from typeshed
- * smaller improvements to documentation (thanks to @mausch)
+* update bundled osm2pgsql to 1.7.1
+* add support for PostgreSQL 15
+* typing fixes to work with latest type annotations from typeshed
+* smaller improvements to documentation (thanks to @mausch)
 
 4.1.1
 
- * fix XSS vulnerability in debug view
+* fix XSS vulnerability in debug view
 
 4.1.0
 
- * switch to ICU tokenizer as default
- * add housenumber normalization and support optional spaces during search
- * add postcode format checking and support optional spaces during search
- * add function for cleaning housenumbers in word table
- * add updates/deletion of country names imported from OSM
- * linked places no longer overwrite names from a place permanently
- * move default country name configuration into yaml file (thanks @tareqpi)
- * more compact layout for interpolation and TIGER tables
- * introduce mutations to ICU tokenizer (used for German umlauts)
- * support reinitializing a full project directory with refresh --website
- * fix various issues with linked places on updates
- * add support for external sanitizers and token analyzers
- * add CLI commands for forced indexing
- * add CLI command for version report
- * add offline import mode
- * change geocodejson to return a feature class in the 'type' field
- * add ISO3166-2 to address output (thanks @I70l0teN4ik)
- * improve parsing and matching of addr: tags
- * support relations as street members of associatedStreet
- * better ranking for address results from TIGER data
- * adapt rank classification to changed tag usage in OSM
- * update bundled osm2pgsql to 1.6.0
- * add typing information to Python code
- * improve unit test coverage
- * reorganise and speed up code for BDD tests, drop support for scenes
- * move PHP unit tests to PHP 9.5
- * extensive typo fixes in documentation (thanks @woodpeck,@StephanGeorg,
+* switch to ICU tokenizer as default
+* add housenumber normalization and support optional spaces during search
+* add postcode format checking and support optional spaces during search
+* add function for cleaning housenumbers in word table
+* add updates/deletion of country names imported from OSM
+* linked places no longer overwrite names from a place permanently
+* move default country name configuration into yaml file (thanks @tareqpi)
+* more compact layout for interpolation and TIGER tables
+* introduce mutations to ICU tokenizer (used for German umlauts)
+* support reinitializing a full project directory with refresh --website
+* fix various issues with linked places on updates
+* add support for external sanitizers and token analyzers
+* add CLI commands for forced indexing
+* add CLI command for version report
+* add offline import mode
+* change geocodejson to return a feature class in the 'type' field
+* add ISO3166-2 to address output (thanks @I70l0teN4ik)
+* improve parsing and matching of addr: tags
+* support relations as street members of associatedStreet
+* better ranking for address results from TIGER data
+* adapt rank classification to changed tag usage in OSM
+* update bundled osm2pgsql to 1.6.0
+* add typing information to Python code
+* improve unit test coverage
+* reorganise and speed up code for BDD tests, drop support for scenes
+* move PHP unit tests to PHP 9.5
+* extensive typo fixes in documentation (thanks @woodpeck,@StephanGeorg,
    @amandasaurus, @nslxndr, @stefkiourk, @Luflosi, @kianmeng)
- * drop official support for installation on CentOS
- * add installation instructions for Ubuntu 22.04
- * add support for PHP8
- * add setup instructions for updates and systemd
- * drop support for PostgreSQL 9.5
+* drop official support for installation on CentOS
+* add installation instructions for Ubuntu 22.04
+* add support for PHP8
+* add setup instructions for updates and systemd
+* drop support for PostgreSQL 9.5
 
 4.0.2
 
- * fix XSS vulnerability in debug view
+* fix XSS vulnerability in debug view
 
 4.0.1
 
- * fix initialisation error in replication script
- * ICU tokenizer: avoid any special characters in word tokens
- * better error message when API php script does not exist
- * fix quoting of house numbers in SQL queries
- * small fixes and improvements in search query parsing
- * add documentation for moving the database to a different machine
+* fix initialisation error in replication script
+* ICU tokenizer: avoid any special characters in word tokens
+* better error message when API php script does not exist
+* fix quoting of house numbers in SQL queries
+* small fixes and improvements in search query parsing
+* add documentation for moving the database to a different machine
 
 4.0.0
 
- * refactor name token computation and introduce ICU tokenizer
-   * name processing now happens in the indexer outside the DB
-   * reorganizes abbreviation handling and moves it to the indexing phases
-   * adds preprocessing of names
- * add country-specific ranking for Spain, Slovakia
- * partially switch to using SP-GIST indexes
- * better updating of dependent addresses for name changes in streets
- * remove unused/broken tables for external housenumbers
- * move external postcodes to CSV format and no longer save them in tables
+* refactor name token computation and introduce ICU tokenizer
+  * name processing now happens in the indexer outside the DB
+  * reorganizes abbreviation handling and moves it to the indexing phases
+  * adds preprocessing of names
+* add country-specific ranking for Spain, Slovakia
+* partially switch to using SP-GIST indexes
+* better updating of dependent addresses for name changes in streets
+* remove unused/broken tables for external housenumbers
+* move external postcodes to CSV format and no longer save them in tables
    (adds support for postcodes for arbitrary countries)
- * remove postcode helper entries from placex (thanks @AntoJvlt)
- * change required format for TIGER data to CSV
- * move configuration of default languages from wiki into config file
- * expect customized configuration files in project directory by default
- * disable search API for reverse-only import (thanks @darkshredder)
- * port most of maintenance/import code to Python and remove PHP utils
- * add catch-up mode for replication
- * add updating of special phrases (thanks @AntoJvlt)
- * add support for special phrases in CSV files (thanks @AntoJvlt)
- * switch to case-independent matching between place and boundary names
- * remove disabling of reverse query parsing
- * minor tweaks to search algorithm to avoid more false positives
- * major overhaul of the administrator and developer documentation
- * add security disclosure policy
- * add testing of installation scripts via CI
- * drop support for Python < 3.6 and Postgresql < 9.5
+* remove postcode helper entries from placex (thanks @AntoJvlt)
+* change required format for TIGER data to CSV
+* move configuration of default languages from wiki into config file
+* expect customized configuration files in project directory by default
+* disable search API for reverse-only import (thanks @darkshredder)
+* port most of maintenance/import code to Python and remove PHP utils
+* add catch-up mode for replication
+* add updating of special phrases (thanks @AntoJvlt)
+* add support for special phrases in CSV files (thanks @AntoJvlt)
+* switch to case-independent matching between place and boundary names
+* remove disabling of reverse query parsing
+* minor tweaks to search algorithm to avoid more false positives
+* major overhaul of the administrator and developer documentation
+* add security disclosure policy
+* add testing of installation scripts via CI
+* drop support for Python < 3.6 and Postgresql < 9.5
 
 3.7.3
 
- * fix XSS vulnerability in debug view
+* fix XSS vulnerability in debug view
 
 3.7.2
 
- * fix database check for reverse-only imports
- * do not error out in status API result when import date is missing
- * add array_key_last function for PHP < 7.3 (thanks to @woodpeck)
- * fix more url when server name is unknown (thanks to @mogita)
- * commit changes to replication log table
+* fix database check for reverse-only imports
+* do not error out in status API result when import date is missing
+* add array_key_last function for PHP < 7.3 (thanks to @woodpeck)
+* fix more url when server name is unknown (thanks to @mogita)
+* commit changes to replication log table
 
 3.7.1
 
- * fix smaller issues with special phrases import (thanks @AntoJvlt)
- * add index to speed up continued indexing during import
- * fix index on location_property_tiger(parent_place_id) (thanks @changpingc)
- * make sure Python code is backward-compatible with Python 3.5
- * various documentation fixes
+* fix smaller issues with special phrases import (thanks @AntoJvlt)
+* add index to speed up continued indexing during import
+* fix index on location_property_tiger(parent_place_id) (thanks @changpingc)
+* make sure Python code is backward-compatible with Python 3.5
+* various documentation fixes
 
 3.7.0
 
- * switch to dotenv for configuration file
- * introduce 'make install' (reorganising most of the code)
- * introduce nominatim tool as replacement for various php scripts
- * introduce project directories and allow multiple installations from same build
- * clean up BDD tests: drop nose, reorganise step code
- * simplify test database for API BDD tests and autoinstall database
- * port most of the code for command-line tools to Python
+* switch to dotenv for configuration file
+* introduce 'make install' (reorganising most of the code)
+* introduce nominatim tool as replacement for various php scripts
+* introduce project directories and allow multiple installations from same build
+* clean up BDD tests: drop nose, reorganise step code
+* simplify test database for API BDD tests and autoinstall database
+* port most of the code for command-line tools to Python
    (thanks to @darkshredder and @AntoJvlt)
- * add tests for all tooling
- * replace pyosmium-get-changes with custom internal implementation using
+* add tests for all tooling
+* replace pyosmium-get-changes with custom internal implementation using
    pyosmium
- * improve search for queries with housenumber and partial terms
- * add database versioning
- * use jinja2 for preprocessing SQL files
- * introduce automatic migrations
- * reverse fix preference of interpolations over housenumbers
- * parallelize indexing of postcodes
- * add non-key indexes to speed up housenumber + street searches
- * switch housenumber field in placex to save transliterated names
+* improve search for queries with housenumber and partial terms
+* add database versioning
+* use jinja2 for preprocessing SQL files
+* introduce automatic migrations
+* reverse fix preference of interpolations over housenumbers
+* parallelize indexing of postcodes
+* add non-key indexes to speed up housenumber + street searches
+* switch housenumber field in placex to save transliterated names
 
 3.6.0
 
- * add full support for searching by and displaying of addr:* tags
- * improve address output for large-area objects
- * better use of country names from OSM data for search and display
- * better debug output for reverse call
- * add support for addr:place links without an place equivalent in OSM
- * improve finding postcodes with normalisation artefacts
- * batch object to index for rank 30, avoiding a wrap-around of transaction
+* add full support for searching by and displaying of addr:* tags
+* improve address output for large-area objects
+* better use of country names from OSM data for search and display
+* better debug output for reverse call
+* add support for addr:place links without an place equivalent in OSM
+* improve finding postcodes with normalisation artefacts
+* batch object to index for rank 30, avoiding a wrap-around of transaction
    IDs in PostgreSQL
- * introduce dynamic address rank computation for administrative boundaries
+* introduce dynamic address rank computation for administrative boundaries
    depending on linked objects and their place in the admin level hierarchy
- * add country-specific address ranking for Indonesia, Russia, Belgium and
+* add country-specific address ranking for Indonesia, Russia, Belgium and
    the Netherlands (thanks @hendrikmoree)
- * make sure wikidata/wikipedia tags are imported for all styles
- * make POIs searchable by name and housenumber (thanks @joy-yyd)
- * reverse geocoding now ignores places without an address rank (rivers etc.)
- * installation of a webserver is no longer mandatory, for development
+* make sure wikidata/wikipedia tags are imported for all styles
+* make POIs searchable by name and housenumber (thanks @joy-yyd)
+* reverse geocoding now ignores places without an address rank (rivers etc.)
+* installation of a webserver is no longer mandatory, for development
    use the php internal webserver via 'make serve
- * reduce the influence of place nodes in addresses
- * drop support for the unspecific is_in tag
- * various minor tweaks to supplied styles
- * move HTML web frontend into its own project
- * move scripts for processing external data sources into separate directories
- * introduce separate configuration for website (thanks @krahulreddy)
- * update documentation, in particular, clean up development docs
- * update osm2pgsql to 1.4.0
+* reduce the influence of place nodes in addresses
+* drop support for the unspecific is_in tag
+* various minor tweaks to supplied styles
+* move HTML web frontend into its own project
+* move scripts for processing external data sources into separate directories
+* introduce separate configuration for website (thanks @krahulreddy)
+* update documentation, in particular, clean up development docs
+* update osm2pgsql to 1.4.0
 
 3.5.2
 
- * ensure that wikipedia tags are imported for all styles
- * reinstate verbosity for indexing during updates
- * make house number reappear in display name on named POIs
- * introduce batch processing in indexer to avoid transaction ID overrun
- * increase splitting for large geometries to improve indexing speed
- * remove deprecated get_magic_quotes_gpc() function
- * make sure that all postcodes have an entry in word and are thus searchable
- * remove use of ST_Covers in conjunction with ST_Intersects,
+* ensure that wikipedia tags are imported for all styles
+* reinstate verbosity for indexing during updates
+* make house number reappear in display name on named POIs
+* introduce batch processing in indexer to avoid transaction ID overrun
+* increase splitting for large geometries to improve indexing speed
+* remove deprecated get_magic_quotes_gpc() function
+* make sure that all postcodes have an entry in word and are thus searchable
+* remove use of ST_Covers in conjunction with ST_Intersects,
    causes bad query planning and slow updates in Postgis3
- * update osm2pgsql
+* update osm2pgsql
 
 3.5.1
 
- * disable jit and parallel processing in PostgreSQL for osm2pgsql
- * update libosmium to 2.15.6 (fixes an issue with processing hanging
+* disable jit and parallel processing in PostgreSQL for osm2pgsql
+* update libosmium to 2.15.6 (fixes an issue with processing hanging
    on large multipolygons)
 
 3.5.0
 
- * structured select on HTML search page
- * new PHP Nominatim\Shell class to wrap shell escaping
- * remove polygon parameter from all API calls
- * improve handling of postcode areas
- * reorganise place linking algorithm, now using wikidata tag as well
- * remove linkees from search_name and larger_area tables
- * introduce country-specific address ranks
- * reorganise rank address computation
- * cleanup of partition function
- * improve parenting for large POIs
- * add support for Postgresql 12 and Postgis 3
- * add earlier cleanup when --drop is given, to reduce memory usage
- * remove use of place_id in URLs
- * replace C nominatim indexer with a simpler Python implementation
- * split up the huge sql/functions.sql file
- * move osm2pgsql tests to osm2pgsql
- * add new extratags style which imports all tags from OSM
- * add new script for checking the import after completion
- * update osm2pgsql, reducing memory usage
- * use new wikipedia importance and add processing of wikidata tags
- * add search form for details page
- * use ExtraDataPath for country_grid table
- * remove short_name from list of names to be displayed
- * split up CMakeFile, so that all parts can be built separately
- * update installation instructions for CentOS and Ubuntu
- * add script for importing/updating multiple country extracts
- * various documentation improvements
+* structured select on HTML search page
+* new PHP Nominatim\Shell class to wrap shell escaping
+* remove polygon parameter from all API calls
+* improve handling of postcode areas
+* reorganise place linking algorithm, now using wikidata tag as well
+* remove linkees from search_name and larger_area tables
+* introduce country-specific address ranks
+* reorganise rank address computation
+* cleanup of partition function
+* improve parenting for large POIs
+* add support for Postgresql 12 and Postgis 3
+* add earlier cleanup when --drop is given, to reduce memory usage
+* remove use of place_id in URLs
+* replace C nominatim indexer with a simpler Python implementation
+* split up the huge sql/functions.sql file
+* move osm2pgsql tests to osm2pgsql
+* add new extratags style which imports all tags from OSM
+* add new script for checking the import after completion
+* update osm2pgsql, reducing memory usage
+* use new wikipedia importance and add processing of wikidata tags
+* add search form for details page
+* use ExtraDataPath for country_grid table
+* remove short_name from list of names to be displayed
+* split up CMakeFile, so that all parts can be built separately
+* update installation instructions for CentOS and Ubuntu
+* add script for importing/updating multiple country extracts
+* various documentation improvements
 
 3.4.2
 
- * fix security bug in /details endpoint where user input was not
+* fix security bug in /details endpoint where user input was not
    properly sanitized
 
 3.4.1
 
- * update osm2pgsql to fix hans during updates and lost address numbers
+* update osm2pgsql to fix hans during updates and lost address numbers
    during updates
 
 3.4.0
 
- * increase required version for PostgreSQL(9.3), PostGIS(2.2) and PHP(7.0)
- * better error reporting for out-of-memory errors
- * exclude postcode ranges separated by colon from centre point calculation
- * update osm2pgsql, better handling of imports without flatnode file
- * switch to more efficient algorithm for word set computation
- * use only boundaries for country and state parts of addresses
- * improve updates of addresses with housenumbers and interpolations
- * remove country from place_addressline table and use country_code instead
- * optimise indexes on search_name partition tables
- * improve searching of attached streets for large objects like airports
- * drop support for python 2
- * new scripts for importing Wikidata for importance
- * create and drop indexes concurrently to not clash with auto vacuum
- * various documentation improvements
-
+* increase required version for PostgreSQL(9.3), PostGIS(2.2) and PHP(7.0)
+* better error reporting for out-of-memory errors
+* exclude postcode ranges separated by colon from centre point calculation
+* update osm2pgsql, better handling of imports without flatnode file
+* switch to more efficient algorithm for word set computation
+* use only boundaries for country and state parts of addresses
+* improve updates of addresses with housenumbers and interpolations
+* remove country from place_addressline table and use country_code instead
+* optimise indexes on search_name partition tables
+* improve searching of attached streets for large objects like airports
+* drop support for python 2
+* new scripts for importing Wikidata for importance
+* create and drop indexes concurrently to not clash with auto vacuum
+* various documentation improvements
 
 3.3.0
 
- * zoom 17 in reverse now zooms in on minor streets
- * fix use of postcode relations in address
- * support for housenumber 0 on interpolations
- * replace database abstraction DB with PDO and switch to using exceptions
- * exclude line features at rank 30 from reverse geocoding
- * remove self-reference and country from place_addressline
- * make json output more readable (less escaping)
- * update conversion scripts for postcodes
- * scripts in utils/ are no longer executable (always use scripts in build dir)
- * remove Natural Earth country fallback (OSM is complete enough)
- * make rank assignments configurable
- * allow accept languages with underscore
- * new reverse-only import mode (without search index table)
- * rely on boundaries only for states and countries
- * update osm2pgsql, now using a configurable style
- * provide multiple import styles
- * improve search when house number and postcodes are dropped
- * overhaul of setup code
- * add support for PHPUnit 6
- * update test database
- * various documentation improvements
+* zoom 17 in reverse now zooms in on minor streets
+* fix use of postcode relations in address
+* support for housenumber 0 on interpolations
+* replace database abstraction DB with PDO and switch to using exceptions
+* exclude line features at rank 30 from reverse geocoding
+* remove self-reference and country from place_addressline
+* make json output more readable (less escaping)
+* update conversion scripts for postcodes
+* scripts in utils/ are no longer executable (always use scripts in build dir)
+* remove Natural Earth country fallback (OSM is complete enough)
+* make rank assignments configurable
+* allow accept languages with underscore
+* new reverse-only import mode (without search index table)
+* rely on boundaries only for states and countries
+* update osm2pgsql, now using a configurable style
+* provide multiple import styles
+* improve search when house number and postcodes are dropped
+* overhaul of setup code
+* add support for PHPUnit 6
+* update test database
+* various documentation improvements
 
 3.2.0
 
- * complete rewrite of reverse search algorithm
- * add new geojson and geocodejson output formats
- * add simple export script to export addresses to CSV
- * remove is_in terms from address computation
- * remove unused search_name_country tables
- * various smaller fixes to query parsing
- * convert Tokens and token types to class types
- * correctly handle update when boundary object type is changed
- * improve debug output for /search endpoint
- * update to latest osm2pgsql and leaflet.js
- * overhaul of /details endpoint:
-     * new class parameter when using osmtype/osmid parameters
-     * permalink to instance-independent osmtype/osmid parameter format
-     * new json output format
- * update CentOS vagrant machine to use SELinux
- * add vagrant scripts for Ubuntu 18.04
- * fix build process for BSD
- * enable running the database on a different host than the setup scripts
- * allow to configure use of custom PHP binaries (PHP_BIN)
- * extensive coding style improvements to PHP code
- * more PHP unit tests for new classes
- * increase coverage for API tests
- * add documentation for API
+* complete rewrite of reverse search algorithm
+* add new geojson and geocodejson output formats
+* add simple export script to export addresses to CSV
+* remove is_in terms from address computation
+* remove unused search_name_country tables
+* various smaller fixes to query parsing
+* convert Tokens and token types to class types
+* correctly handle update when boundary object type is changed
+* improve debug output for /search endpoint
+* update to latest osm2pgsql and leaflet.js
+* overhaul of /details endpoint:
+  * new class parameter when using osmtype/osmid parameters
+  * permalink to instance-independent osmtype/osmid parameter format
+  * new json output format
+* update CentOS vagrant machine to use SELinux
+* add vagrant scripts for Ubuntu 18.04
+* fix build process for BSD
+* enable running the database on a different host than the setup scripts
+* allow to configure use of custom PHP binaries (PHP_BIN)
+* extensive coding style improvements to PHP code
+* more PHP unit tests for new classes
+* increase coverage for API tests
+* add documentation for API
 
 3.1.0
 
- * rework postcode handling and introduce location_postcode table
- * make setup less verbose and print a summary in the end
- * setup: error out when web site user does not exist
- * add more API tests to complete code coverage
- * reinstate key-value amenity search (special term [key=value])
- * fix detection of coordinates in query
- * various smaller tweaks to ranking of search interpretations
- * complete overhaul of PHP frontend code using OOP
- * add address rank to details page
- * update Tiger scripts for 2017 data and clean up unused code
- * various bug fixes and improvements to UI
- * improve reverse geocoding performance close to coasts
- * more PHP style cleanup (quoting)
- * allow unnamed road in reverse geocoding to avoid too far off results
- * add function to recalculate counts for full-word search term
- * add function to check if new updates are available
- * update documentation and switch to mkdocs for generating HTML
+* rework postcode handling and introduce location_postcode table
+* make setup less verbose and print a summary in the end
+* setup: error out when web site user does not exist
+* add more API tests to complete code coverage
+* reinstate key-value amenity search (special term [key=value])
+* fix detection of coordinates in query
+* various smaller tweaks to ranking of search interpretations
+* complete overhaul of PHP frontend code using OOP
+* add address rank to details page
+* update Tiger scripts for 2017 data and clean up unused code
+* various bug fixes and improvements to UI
+* improve reverse geocoding performance close to coasts
+* more PHP style cleanup (quoting)
+* allow unnamed road in reverse geocoding to avoid too far off results
+* add function to recalculate counts for full-word search term
+* add function to check if new updates are available
+* update documentation and switch to mkdocs for generating HTML
 
 3.0.1
 
- * fix bug in geometry building algorithm in osm2pgsql
- * fix typos in build instructions
+* fix bug in geometry building algorithm in osm2pgsql
+* fix typos in build instructions
 
 3.0.0
 
- * move to cmake build system
- * various fixes to HTML output
- * reverse endpoint now can return geometries
- * add support for PHP7
- * move to on-the-fly computation of interpolations
- * improve handling of linked places (updating)
- * improve test framework:
-    * replace lettuce with behave
-    * use smaller database for API tests
- * drop support for postgres < 9.1, postgis < 2.0 and PHP < 5.4
- * make external data use optional (useful for imports without US)
- * detect postgres and postgis versions automatically
- * clean up query logging and remove unused tables
- * move installation documentation into this repo
- * add self-documenting vagrant scripts
- * remove --create-website, recommend to use website directory in build
- * add accessor functions for URL parameters and improve error checking
- * remove IP blocking and rate-limiting code
- * enable CI via travis
- * reformatting for more consistent coding style
- * make country search term creation part of setup
- * update country names and country grid
- * handle roads that cross boundaries better
- * keep full information on address tags
- * update to refactored osm2pgsql which use libosmium based types
- * switch from osmosis to pyosmium for updates
- * be more strict when matching against special search terms
- * handle postcode entries with multiple values correctly
+* move to cmake build system
+* various fixes to HTML output
+* reverse endpoint now can return geometries
+* add support for PHP7
+* move to on-the-fly computation of interpolations
+* improve handling of linked places (updating)
+* improve test framework:
+  * replace lettuce with behave
+  * use smaller database for API tests
+* drop support for postgres < 9.1, postgis < 2.0 and PHP < 5.4
+* make external data use optional (useful for imports without US)
+* detect postgres and postgis versions automatically
+* clean up query logging and remove unused tables
+* move installation documentation into this repo
+* add self-documenting vagrant scripts
+* remove --create-website, recommend to use website directory in build
+* add accessor functions for URL parameters and improve error checking
+* remove IP blocking and rate-limiting code
+* enable CI via travis
+* reformatting for more consistent coding style
+* make country search term creation part of setup
+* update country names and country grid
+* handle roads that cross boundaries better
+* keep full information on address tags
+* update to refactored osm2pgsql which use libosmium based types
+* switch from osmosis to pyosmium for updates
+* be more strict when matching against special search terms
+* handle postcode entries with multiple values correctly
 
 2.5
 
- * reverse geocoding includes looking up housenumbers from Tiger data
- * added parameter to return simplified geometries
- * new lookup call for getting address information for OSM objects
- * new namedetails and extratags parameters that expose the name and extratags
+* reverse geocoding includes looking up housenumbers from Tiger data
+* added parameter to return simplified geometries
+* new lookup call for getting address information for OSM objects
+* new namedetails and extratags parameters that expose the name and extratags
    fields of the placex table
- * mobile website
- * reverse web view
+* mobile website
+* reverse web view
 
 2.4
 
- * drop support for postgres 8.4
- * rewrite address interpolation
- * switch to C++ version of osm2pgsql and rewrite tag filtering
- * support for bridge:name and tunnel:name, man_made, junction
- * drop way-node index (reduces database size by about 15%)
- * add support for configuring tablespaces and webserver user
- * better evaluation of search queries in right-to-left notation
- * improve house number search for streets with many duplicate entries
- * code cleanup (remove unused functions and tables)
+* drop support for postgres 8.4
+* rewrite address interpolation
+* switch to C++ version of osm2pgsql and rewrite tag filtering
+* support for bridge:name and tunnel:name, man_made, junction
+* drop way-node index (reduces database size by about 15%)
+* add support for configuring tablespaces and webserver user
+* better evaluation of search queries in right-to-left notation
+* improve house number search for streets with many duplicate entries
+* code cleanup (remove unused functions and tables)
 
 2.3
 
- * further improve ordering of results
- * support for more lat/lon formats in search-as-reverse
- * fix handling of GB postcodes
- * new functional test suite
- * support for waterway relations
- * inherit postcodes from street to poi
- * fix housenumber normalisation to find non-latin house numbers
- * take viewbox into account for ordering of results
- * pois may now inherit address tags from surrounding buildings
- * improve what objects may participate in an address
- * clean up handled class/type combinations to current OSM usage
- * lots of bug fixes
+* further improve ordering of results
+* support for more lat/lon formats in search-as-reverse
+* fix handling of GB postcodes
+* new functional test suite
+* support for waterway relations
+* inherit postcodes from street to poi
+* fix housenumber normalisation to find non-latin house numbers
+* take viewbox into account for ordering of results
+* pois may now inherit address tags from surrounding buildings
+* improve what objects may participate in an address
+* clean up handled class/type combinations to current OSM usage
+* lots of bug fixes
 
 2.2
 
- * correct database rights for www-data
- * add timestamps for update output
- * load postgis via extension for postgis >= 2.0
- * remove non-admin boundaries from addresses
- * further improve ordering of results with same importance
- * merge addr:postcode tags into object addresses
- * include rank and importance in reverse geocode output
- * replace ST_Line_Interpolate_Point with ST_LineInterpolatePoint
+* correct database rights for www-data
+* add timestamps for update output
+* load postgis via extension for postgis >= 2.0
+* remove non-admin boundaries from addresses
+* further improve ordering of results with same importance
+* merge addr:postcode tags into object addresses
+* include rank and importance in reverse geocode output
+* replace ST_Line_Interpolate_Point with ST_LineInterpolatePoint
   (for postgis >= 2.1)
- * update osm2pgsql to latest version
- * properly detect changes of admin_level
- * remove landuses when name is removed
- * smaller fixes
+* update osm2pgsql to latest version
+* properly detect changes of admin_level
+* remove landuses when name is removed
+* smaller fixes
 
 2.1
 
- * update to openlayers 2.12 (now custom built)
- * update fallback OSM boundaries
- * add support for postgresql 9.2/9.3 and postgis 2.x
- * add structured queries
- * add options for polygon output in various formats
+* update to openlayers 2.12 (now custom built)
+* update fallback OSM boundaries
+* add support for postgresql 9.2/9.3 and postgis 2.x
+* add structured queries
+* add options for polygon output in various formats
    (geojson, svg, kml, postgis text)
- * maintenance functions for deleting objects and updating regions
+* maintenance functions for deleting objects and updating regions
    (plcae_force_update/place_force_delete)
- * web view for polygons that need deleting
- * rate limiting using memcache
- * improve layout of details page
- * add support for boundary:postal_code
- * full CORS support
- * improve parenting of POIs
- * support for extract daily diffs from Geofabrik
- * support for addresses without a street
+* web view for polygons that need deleting
+* rate limiting using memcache
+* improve layout of details page
+* add support for boundary:postal_code
+* full CORS support
+* improve parenting of POIs
+* support for extract daily diffs from Geofabrik
+* support for addresses without a street
    (addr:place and conscription number house numbers)
- * improve layout of word and search_name_* tables
- * support for US ZIP+4 codes
- * refactoring of front-end PHP code
- * lots of smaller bug fixes
+* improve layout of word and search_name_* tables
+* support for US ZIP+4 codes
+* refactoring of front-end PHP code
+* lots of smaller bug fixes
 
 2.0.1
 
- * delete outdated entries from location_area_country
- * remove remaining uses of INTEGER, to allow node ids larger than 2^31
+* delete outdated entries from location_area_country
+* remove remaining uses of INTEGER, to allow node ids larger than 2^31

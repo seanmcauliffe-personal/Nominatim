@@ -11,14 +11,15 @@ import pytest
 
 from nominatim_db.utils.centroid import PointsCentroid
 
+
 def test_empty_set():
     c = PointsCentroid()
 
-    with pytest.raises(ValueError, match='No points'):
+    with pytest.raises(ValueError, match="No points"):
         c.centroid()
 
 
-@pytest.mark.parametrize("centroid", [(0,0), (-1, 3), [0.0000032, 88.4938]])
+@pytest.mark.parametrize("centroid", [(0, 0), (-1, 3), [0.0000032, 88.4938]])
 def test_one_point_centroid(centroid):
     c = PointsCentroid()
 
@@ -52,5 +53,5 @@ def test_manypoint_centroid():
 def test_add_non_tuple(param):
     c = PointsCentroid()
 
-    with pytest.raises(ValueError, match='2-element tuples'):
+    with pytest.raises(ValueError, match="2-element tuples"):
         c += param

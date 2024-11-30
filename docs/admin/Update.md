@@ -10,7 +10,7 @@ For a list of other methods to add or update data see the output of
     If you have configured a flatnode file for the import, then you
     need to keep this flatnode file around for updates.
 
-### Installing the newest version of Pyosmium
+## Installing the newest version of Pyosmium
 
 The replication process uses
 [Pyosmium](https://docs.osmcode.org/pyosmium/latest/updating_osm_data.html)
@@ -147,7 +147,6 @@ running (`sudo systemctl is-active nominatim-updates.service`). Current output
 from the update can be seen like above (`systemctl status
 nominatim-updates.service`).
 
-
 #### Catch-up mode
 
 With the `--catch-up` parameter, Nominatim will immediately try to download
@@ -180,7 +179,6 @@ replication catch-up at whatever interval you desire.
     updated source with daily updates), use the
     continuous update mode. It ensures to re-request the newest update until it
     is published.
-
 
 #### Continuous updates
 
@@ -228,5 +226,3 @@ sudo systemctl daemon-reload
 sudo systemctl enable nominatim-updates
 sudo systemctl start nominatim-updates
 ```
-
-

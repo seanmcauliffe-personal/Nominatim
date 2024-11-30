@@ -10,7 +10,6 @@ It is possible if the import already got to the indexing stage.
 Check the last line of output that was logged before the process
 was killed. If it looks like this:
 
-
     Done 844 in 13 @ 64.923080 per second - Rank 26 ETA (seconds): 7.886255
 
 then you can resume with the following command:
@@ -20,7 +19,6 @@ nominatim import --continue indexing
 ```
 
 If the reported rank is 26 or higher, you can also safely add `--index-noanalyse`.
-
 
 ### PostgreSQL crashed "invalid page in block"
 
@@ -35,7 +33,6 @@ nominatim import --continue indexing
 ```
 
 Otherwise it's best to start the full setup from the beginning.
-
 
 ### I see the error: "ERROR: mmap (remap) failed"
 
@@ -61,7 +58,6 @@ the import again worked.
 The server cannot access your database. Add `&debug=1` to your URL
 to get the full error message.
 
-
 ### Website reports "DB Error: insufficient permissions"
 
 The user the webserver, e.g. Apache, runs under needs to have access to the
@@ -83,7 +79,6 @@ for default Ubuntu operating system for example it's `www-data`.
 Make sure you have the PostgreSQL extensions "hstore" and "postgis" installed.
 See the installation instructions for a full list of required packages.
 
-
 ### UnicodeEncodeError: 'ascii' codec can't encode character
 
 Make sure that the operating system's locale is UTF-8. With some prebuilt
@@ -103,12 +98,11 @@ And install it using
    dpkg-reconfigure locales
 ```
 
-### I forgot to delete the flatnodes file before starting an import.
+### I forgot to delete the flatnodes file before starting an import
 
 That's fine. For each import the flatnodes file get overwritten.
 See [https://help.openstreetmap.org/questions/52419/nominatim-flatnode-storage](https://help.openstreetmap.org/questions/52419/nominatim-flatnode-storage)
 for more information.
-
 
 ## Running your own instance
 

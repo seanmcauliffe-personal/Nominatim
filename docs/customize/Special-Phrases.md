@@ -15,15 +15,15 @@ Special phrases may also be imported from any custom CSV file. The file needs
 to have a header line, use comma as delimiter and define the following
 columns:
 
- * **phrase**: the keyword to look for
- * **class**: key of the main tag of the place to find
+* **phrase**: the keyword to look for
+* **class**: key of the main tag of the place to find
    (see [principal tags in import style](Import-Styles.md#set_main_tags-principal-tags)
- * **type**: value of the main tag
- * **operator**: type of special phrase, may be one of:
-     * *in*: place is within the place defined by the search term (e.g. "_Hotels in_ Berlin")
-     * *near*: place is near the place defined by the search term (e.g. "_bus stops near_ Big Ben")
-     * *named*: special phrase is a classifier (e.g. "_hotel_ California")
-     * *-*: unspecified, can be any of the above
+* **type**: value of the main tag
+* **operator**: type of special phrase, may be one of:
+  * *in*: place is within the place defined by the search term (e.g. "*Hotels in* Berlin")
+  * *near*: place is near the place defined by the search term (e.g. "*bus stops near* Big Ben")
+  * *named*: special phrase is a classifier (e.g. "*hotel* California")
+  * *-*: unspecified, can be any of the above
 
 If the file contains any other columns, then they are silently ignored
 

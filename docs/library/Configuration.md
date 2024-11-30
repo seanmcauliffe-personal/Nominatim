@@ -19,7 +19,6 @@ Configuration options are resolved in the following order:
 For more information on configuration via dotenv and a list of possible
 configuration parameters, see the [Configuration page](../customize/Settings.md).
 
-
 ## `Configuration` class
 
 ::: nominatim_api.Configuration

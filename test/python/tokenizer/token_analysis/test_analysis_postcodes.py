@@ -27,9 +27,10 @@ DEFAULT_TRANSLITERATION = """ ::  Latin ();
                               '🜵' > ' ';
                           """
 
+
 @pytest.fixture
 def analyser():
-    rules = { 'analyzer': 'postcodes'}
+    rules = {"analyzer": "postcodes"}
     config = module.configure(rules, DEFAULT_NORMALIZATION)
 
     trans = Transliterator.createFromRules("test_trans", DEFAULT_TRANSLITERATION)
@@ -43,17 +44,21 @@ def get_normalized_variants(proc, name):
     return proc.compute_variants(norm.transliterate(name).strip())
 
 
-@pytest.mark.parametrize('name,norm', [('12', '12'),
-                                       ('A 34 ', 'A 34'),
-                                       ('34-av', '34-AV')])
+@pytest.mark.parametrize(
+    "name,norm", [("12", "12"), ("A 34 ", "A 34"), ("34-av", "34-AV")]
+)
 def test_get_canonical_id(analyser, name, norm):
-    assert analyser.get_canonical_id(PlaceName(name=name, kind='', suffix='')) == norm
+    assert analyser.get_canonical_id(PlaceName(name=name, kind="", suffix="")) == norm
 
 
-@pytest.mark.parametrize('postcode,variants', [('12345', {'12345'}),
-                                               ('AB-998', {'ab 998', 'ab998'}),
-                                               ('23 FGH D3', {'23 fgh d3', '23fgh d3',
-                                                              '23 fghd3', '23fghd3'})])
+@pytest.mark.parametrize(
+    "postcode,variants",
+    [
+        ("12345", {"12345"}),
+        ("AB-998", {"ab 998", "ab998"}),
+        ("23 FGH D3", {"23 fgh d3", "23fgh d3", "23 fghd3", "23fghd3"}),
+    ],
+)
 def test_compute_variants(analyser, postcode, variants):
     out = analyser.compute_variants(postcode)
 

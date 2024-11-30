@@ -8,11 +8,9 @@ The parameters of the endpoint and the output may change occasionally between
 versions of Nominatim. Do not rely on the output in scripts or applications.
 
 !!! warning
-    The details endpoint at https://nominatim.openstreetmap.org
+    The details endpoint at <https://nominatim.openstreetmap.org>
     may not used in scripts or bots at all.
     See [Nominatim Usage Policy](https://operations.osmfoundation.org/policies/nominatim/).
-
-
 
 The details API supports the following two request formats:
 
@@ -43,7 +41,6 @@ a permanent id and shouldn't be used in bug reports.
     The API can also be used with the URL
     `https://nominatim.openstreetmap.org/details.php`. This is now deprecated
     and will be removed in future versions.
-
 
 ## Parameters
 
@@ -102,7 +99,6 @@ grouped by type.
 |-----------| -----  | ------- |
 | polygon_geojson | 0 or 1 | 0 |
 
-
 Include geometry of result.
 
 ### Language of results
@@ -115,13 +111,11 @@ Preferred language order for showing search results. This may either be
 a simple comma-separated list of language codes or have the same format
 as the ["Accept-Language" HTTP header](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Accept-Language).
 
-
 ## Examples
 
-##### JSON
+### JSON
 
 [https://nominatim.openstreetmap.org/details?osmtype=W&osmid=38210407&format=json](https://nominatim.openstreetmap.org/details?osmtype=W&osmid=38210407&format=json)
-
 
 ```json
 {

@@ -11,6 +11,7 @@ import pytest
 
 import nominatim_api.v1.helpers as helper
 
+
 @pytest.mark.parametrize('inp', ['',
                                  'abc',
                                  '12 23',
@@ -35,9 +36,11 @@ def test_extract_coords_with_text_before():
 def test_extract_coords_with_text_after():
     assert ('abc', 12.456, -78.90) == helper.extract_coords_from_query('-78.90, 12.456   abc')
 
+
 @pytest.mark.parametrize('inp', [' [12.456,-78.90] ', ' 12.456,-78.90 '])
 def test_extract_coords_with_spaces(inp):
     assert ('', -78.90, 12.456) == helper.extract_coords_from_query(inp)
+
 
 @pytest.mark.parametrize('inp', ['40 26.767 N 79 58.933 W',
                      '40° 26.767′ N 79° 58.933′ W',
@@ -48,7 +51,7 @@ def test_extract_coords_with_spaces(inp):
                      'N 40°26.767′, W 79°58.933′',
                      '	N 40°26.767′, W 79°58.933′',
                      "N 40°26.767', W 79°58.933'",
- 
+
                      '40 26 46 N 79 58 56 W',
                      '40° 26′ 46″ N 79° 58′ 56″ W',
                      '40° 26′ 46.00″ N 79° 58′ 56.00″ W',
@@ -57,12 +60,12 @@ def test_extract_coords_with_spaces(inp):
                      'N 40° 26′ 46″, W 79° 58′ 56″',
                      'N 40° 26\' 46", W 79° 58\' 56"',
                      'N 40° 26\' 46", W 79° 58\' 56"',
- 
+
                      '40.446 -79.982',
                      '40.446,-79.982',
                      '40.446° N 79.982° W',
                      'N 40.446° W 79.982°',
- 
+
                      '[40.446 -79.982]',
                      '[40.446,-79.982]',
                      '       40.446  ,   -79.982     ',
@@ -108,9 +111,11 @@ def test_extract_category_good(inp):
     assert cls == 'shop'
     assert typ == 'fish'
 
+
 def test_extract_category_only():
     assert helper.extract_category_from_query('[shop=market]') == ('', 'shop', 'market')
 
+
 @pytest.mark.parametrize('inp', ['house []', 'nothing', '[352]'])
-def  test_extract_category_no_match(inp):
+def test_extract_category_no_match(inp):
     assert helper.extract_category_from_query(inp) == (inp, None, None)

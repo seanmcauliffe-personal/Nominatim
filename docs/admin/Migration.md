@@ -231,10 +231,11 @@ The `wikipedia_*` tables have a new format that also includes references to
 Wikidata. You need to update the computation functions and the tables as
 follows:
 
-  * download the new Wikipedia tables as described in the import section
-  * reimport the tables: `./utils/setup.php --import-wikipedia-articles`
-  * update the functions: `./utils/setup.php --create-functions --enable-diff-updates`
-  * create a new lookup index:
+* download the new Wikipedia tables as described in the import section
+* reimport the tables: `./utils/setup.php --import-wikipedia-articles`
+* update the functions: `./utils/setup.php --create-functions --enable-diff-updates`
+* create a new lookup index:
+
 ```sql
 CREATE INDEX idx_placex_wikidata
   ON placex
@@ -244,7 +245,8 @@ CREATE INDEX idx_placex_wikidata
     AND osm_type = 'N'
     AND rank_search < 26;
 ```
-  * compute importance: `./utils/update.php --recompute-importance`
+
+* compute importance: `./utils/update.php --recompute-importance`
 
 The last step takes about 10 hours on the full planet.
 
@@ -289,13 +291,13 @@ Finally, update all SQL functions:
 
 Previously database connection setting (`CONST_Database_DSN` in `settings/*.php`) had the format
 
-   * (simple) `pgsql://@/nominatim`
-   * (complex) `pgsql://johndoe:secret@machine1.domain.com:1234/db1`
+* (simple) `pgsql://@/nominatim`
+* (complex) `pgsql://johndoe:secret@machine1.domain.com:1234/db1`
 
 The new format is
 
-   * (simple) `pgsql:dbname=nominatim`
-   * (complex) `pgsql:dbname=db1;host=machine1.domain.com;port=1234;user=johndoe;password=secret`
+* (simple) `pgsql:dbname=nominatim`
+* (complex) `pgsql:dbname=db1;host=machine1.domain.com;port=1234;user=johndoe;password=secret`
 
 ### Natural Earth country boundaries no longer needed as fallback
 

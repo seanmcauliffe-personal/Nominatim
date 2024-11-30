@@ -164,7 +164,6 @@ def _format_error(content_type: str, msg: str, status: int) -> str:
     return f"ERROR: {msg}"
 ```
 
-
 ## Debugging custom formatters
 
 The easiest way to try out your custom formatter is by using the Nominatim

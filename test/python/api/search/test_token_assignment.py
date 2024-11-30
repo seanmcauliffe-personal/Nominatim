@@ -9,18 +9,30 @@ Test for creation of token assignments from tokenized queries.
 """
 import pytest
 
-from nominatim_api.search.query import QueryStruct, Phrase, PhraseType, BreakType, TokenType, TokenRange, Token
-from nominatim_api.search.token_assignment import yield_token_assignments, TokenAssignment, PENALTY_TOKENCHANGE
+from nominatim_api.search.query import (
+    QueryStruct,
+    Phrase,
+    PhraseType,
+    BreakType,
+    TokenType,
+    TokenRange,
+    Token,
+)
+from nominatim_api.search.token_assignment import (
+    yield_token_assignments,
+    TokenAssignment,
+    PENALTY_TOKENCHANGE,
+)
+
 
 class MyToken(Token):
     def get_category(self):
-        return 'this', 'that'
+        return "this", "that"
 
 
 def make_query(*args):
-    q = QueryStruct([Phrase(args[0][1], '')])
-    dummy = MyToken(penalty=3.0, token=45, count=1, addr_count=1,
-                    lookup_word='foo')
+    q = QueryStruct([Phrase(args[0][1], "")])
+    dummy = MyToken(penalty=3.0, token=45, count=1, addr_count=1, lookup_word="foo")
 
     for btype, ptype, _ in args[1:]:
         q.add_node(btype, ptype)
@@ -43,309 +55,406 @@ def check_assignments(actual, *expected):
 
 
 def test_query_with_missing_tokens():
-    q = QueryStruct([Phrase(PhraseType.NONE, '')])
+    q = QueryStruct([Phrase(PhraseType.NONE, "")])
     q.add_node(BreakType.END, PhraseType.NONE)
 
     assert list(yield_token_assignments(q)) == []
 
 
 def test_one_word_query():
-    q = make_query((BreakType.START, PhraseType.NONE,
-                    [(1, TokenType.PARTIAL),
-                     (1, TokenType.WORD),
-                     (1, TokenType.HOUSENUMBER)]))
+    q = make_query(
+        (
+            BreakType.START,
+            PhraseType.NONE,
+            [(1, TokenType.PARTIAL), (1, TokenType.WORD), (1, TokenType.HOUSENUMBER)],
+        )
+    )
 
     res = list(yield_token_assignments(q))
     assert res == [TokenAssignment(name=TokenRange(0, 1))]
 
 
 def test_single_postcode():
-    q = make_query((BreakType.START, PhraseType.NONE,
-                    [(1, TokenType.POSTCODE)]))
+    q = make_query((BreakType.START, PhraseType.NONE, [(1, TokenType.POSTCODE)]))
 
     res = list(yield_token_assignments(q))
     assert res == [TokenAssignment(postcode=TokenRange(0, 1))]
 
 
 def test_single_country_name():
-    q = make_query((BreakType.START, PhraseType.NONE,
-                    [(1, TokenType.COUNTRY)]))
+    q = make_query((BreakType.START, PhraseType.NONE, [(1, TokenType.COUNTRY)]))
 
     res = list(yield_token_assignments(q))
     assert res == [TokenAssignment(country=TokenRange(0, 1))]
 
 
 def test_single_word_poi_search():
-    q = make_query((BreakType.START, PhraseType.NONE,
-                    [(1, TokenType.NEAR_ITEM),
-                     (1, TokenType.QUALIFIER)]))
+    q = make_query(
+        (
+            BreakType.START,
+            PhraseType.NONE,
+            [(1, TokenType.NEAR_ITEM), (1, TokenType.QUALIFIER)],
+        )
+    )
 
     res = list(yield_token_assignments(q))
     assert res == [TokenAssignment(near_item=TokenRange(0, 1))]
 
 
-@pytest.mark.parametrize('btype', [BreakType.WORD, BreakType.PART, BreakType.TOKEN])
+@pytest.mark.parametrize("btype", [BreakType.WORD, BreakType.PART, BreakType.TOKEN])
 def test_multiple_simple_words(btype):
-    q = make_query((BreakType.START, PhraseType.NONE, [(1, TokenType.PARTIAL)]),
-                   (btype, PhraseType.NONE, [(2, TokenType.PARTIAL)]),
-                   (btype, PhraseType.NONE, [(3, TokenType.PARTIAL)]))
+    q = make_query(
+        (BreakType.START, PhraseType.NONE, [(1, TokenType.PARTIAL)]),
+        (btype, PhraseType.NONE, [(2, TokenType.PARTIAL)]),
+        (btype, PhraseType.NONE, [(3, TokenType.PARTIAL)]),
+    )
 
     penalty = PENALTY_TOKENCHANGE[btype]
 
-    check_assignments(yield_token_assignments(q),
-                      TokenAssignment(name=TokenRange(0, 3)),
-                      TokenAssignment(penalty=penalty, name=TokenRange(0, 2),
-                                      address=[TokenRange(2, 3)]),
-                      TokenAssignment(penalty=penalty, name=TokenRange(0, 1),
-                                      address=[TokenRange(1, 3)]),
-                      TokenAssignment(penalty=penalty, name=TokenRange(1, 3),
-                                      address=[TokenRange(0, 1)]),
-                      TokenAssignment(penalty=penalty, name=TokenRange(2, 3),
-                                      address=[TokenRange(0, 2)])
-                     )
+    check_assignments(
+        yield_token_assignments(q),
+        TokenAssignment(name=TokenRange(0, 3)),
+        TokenAssignment(
+            penalty=penalty, name=TokenRange(0, 2), address=[TokenRange(2, 3)]
+        ),
+        TokenAssignment(
+            penalty=penalty, name=TokenRange(0, 1), address=[TokenRange(1, 3)]
+        ),
+        TokenAssignment(
+            penalty=penalty, name=TokenRange(1, 3), address=[TokenRange(0, 1)]
+        ),
+        TokenAssignment(
+            penalty=penalty, name=TokenRange(2, 3), address=[TokenRange(0, 2)]
+        ),
+    )
 
 
 def test_multiple_words_respect_phrase_break():
-    q = make_query((BreakType.START, PhraseType.NONE, [(1, TokenType.PARTIAL)]),
-                   (BreakType.PHRASE, PhraseType.NONE, [(2, TokenType.PARTIAL)]))
+    q = make_query(
+        (BreakType.START, PhraseType.NONE, [(1, TokenType.PARTIAL)]),
+        (BreakType.PHRASE, PhraseType.NONE, [(2, TokenType.PARTIAL)]),
+    )
 
-    check_assignments(yield_token_assignments(q),
-                      TokenAssignment(name=TokenRange(0, 1),
-                                      address=[TokenRange(1, 2)]),
-                      TokenAssignment(name=TokenRange(1, 2),
-                                      address=[TokenRange(0, 1)]))
+    check_assignments(
+        yield_token_assignments(q),
+        TokenAssignment(name=TokenRange(0, 1), address=[TokenRange(1, 2)]),
+        TokenAssignment(name=TokenRange(1, 2), address=[TokenRange(0, 1)]),
+    )
 
 
 def test_housenumber_and_street():
-    q = make_query((BreakType.START, PhraseType.NONE, [(1, TokenType.HOUSENUMBER)]),
-                   (BreakType.PHRASE, PhraseType.NONE, [(2, TokenType.PARTIAL)]))
+    q = make_query(
+        (BreakType.START, PhraseType.NONE, [(1, TokenType.HOUSENUMBER)]),
+        (BreakType.PHRASE, PhraseType.NONE, [(2, TokenType.PARTIAL)]),
+    )
 
-    check_assignments(yield_token_assignments(q),
-                      TokenAssignment(name=TokenRange(1, 2),
-                                      housenumber=TokenRange(0, 1)),
-                      TokenAssignment(address=[TokenRange(1, 2)],
-                                      housenumber=TokenRange(0, 1)))
+    check_assignments(
+        yield_token_assignments(q),
+        TokenAssignment(name=TokenRange(1, 2), housenumber=TokenRange(0, 1)),
+        TokenAssignment(address=[TokenRange(1, 2)], housenumber=TokenRange(0, 1)),
+    )
 
 
 def test_housenumber_and_street_backwards():
-    q = make_query((BreakType.START, PhraseType.NONE, [(1, TokenType.PARTIAL)]),
-                   (BreakType.PHRASE, PhraseType.NONE, [(2, TokenType.HOUSENUMBER)]))
+    q = make_query(
+        (BreakType.START, PhraseType.NONE, [(1, TokenType.PARTIAL)]),
+        (BreakType.PHRASE, PhraseType.NONE, [(2, TokenType.HOUSENUMBER)]),
+    )
 
-    check_assignments(yield_token_assignments(q),
-                      TokenAssignment(name=TokenRange(0, 1),
-                                      housenumber=TokenRange(1, 2)),
-                      TokenAssignment(address=[TokenRange(0, 1)],
-                                      housenumber=TokenRange(1, 2)))
+    check_assignments(
+        yield_token_assignments(q),
+        TokenAssignment(name=TokenRange(0, 1), housenumber=TokenRange(1, 2)),
+        TokenAssignment(address=[TokenRange(0, 1)], housenumber=TokenRange(1, 2)),
+    )
 
 
 def test_housenumber_and_postcode():
-    q = make_query((BreakType.START, PhraseType.NONE, [(1, TokenType.PARTIAL)]),
-                   (BreakType.WORD, PhraseType.NONE, [(2, TokenType.HOUSENUMBER)]),
-                   (BreakType.WORD, PhraseType.NONE, [(3, TokenType.PARTIAL)]),
-                   (BreakType.WORD, PhraseType.NONE, [(4, TokenType.POSTCODE)]))
+    q = make_query(
+        (BreakType.START, PhraseType.NONE, [(1, TokenType.PARTIAL)]),
+        (BreakType.WORD, PhraseType.NONE, [(2, TokenType.HOUSENUMBER)]),
+        (BreakType.WORD, PhraseType.NONE, [(3, TokenType.PARTIAL)]),
+        (BreakType.WORD, PhraseType.NONE, [(4, TokenType.POSTCODE)]),
+    )
 
-    check_assignments(yield_token_assignments(q),
-                      TokenAssignment(penalty=pytest.approx(0.3),
-                                      name=TokenRange(0, 1),
-                                      housenumber=TokenRange(1, 2),
-                                      address=[TokenRange(2, 3)],
-                                      postcode=TokenRange(3, 4)),
-                      TokenAssignment(penalty=pytest.approx(0.3),
-                                      housenumber=TokenRange(1, 2),
-                                      address=[TokenRange(0, 1), TokenRange(2, 3)],
-                                      postcode=TokenRange(3, 4)))
+    check_assignments(
+        yield_token_assignments(q),
+        TokenAssignment(
+            penalty=pytest.approx(0.3),
+            name=TokenRange(0, 1),
+            housenumber=TokenRange(1, 2),
+            address=[TokenRange(2, 3)],
+            postcode=TokenRange(3, 4),
+        ),
+        TokenAssignment(
+            penalty=pytest.approx(0.3),
+            housenumber=TokenRange(1, 2),
+            address=[TokenRange(0, 1), TokenRange(2, 3)],
+            postcode=TokenRange(3, 4),
+        ),
+    )
+
 
 def test_postcode_and_housenumber():
-    q = make_query((BreakType.START, PhraseType.NONE, [(1, TokenType.PARTIAL)]),
-                   (BreakType.WORD, PhraseType.NONE, [(2, TokenType.POSTCODE)]),
-                   (BreakType.WORD, PhraseType.NONE, [(3, TokenType.PARTIAL)]),
-                   (BreakType.WORD, PhraseType.NONE, [(4, TokenType.HOUSENUMBER)]))
+    q = make_query(
+        (BreakType.START, PhraseType.NONE, [(1, TokenType.PARTIAL)]),
+        (BreakType.WORD, PhraseType.NONE, [(2, TokenType.POSTCODE)]),
+        (BreakType.WORD, PhraseType.NONE, [(3, TokenType.PARTIAL)]),
+        (BreakType.WORD, PhraseType.NONE, [(4, TokenType.HOUSENUMBER)]),
+    )
 
-    check_assignments(yield_token_assignments(q),
-                      TokenAssignment(penalty=pytest.approx(0.3),
-                                      name=TokenRange(2, 3),
-                                      housenumber=TokenRange(3, 4),
-                                      address=[TokenRange(0, 1)],
-                                      postcode=TokenRange(1, 2)),
-                      TokenAssignment(penalty=pytest.approx(0.3),
-                                      housenumber=TokenRange(3, 4),
-                                      address=[TokenRange(0, 1), TokenRange(2, 3)],
-                                      postcode=TokenRange(1, 2)))
+    check_assignments(
+        yield_token_assignments(q),
+        TokenAssignment(
+            penalty=pytest.approx(0.3),
+            name=TokenRange(2, 3),
+            housenumber=TokenRange(3, 4),
+            address=[TokenRange(0, 1)],
+            postcode=TokenRange(1, 2),
+        ),
+        TokenAssignment(
+            penalty=pytest.approx(0.3),
+            housenumber=TokenRange(3, 4),
+            address=[TokenRange(0, 1), TokenRange(2, 3)],
+            postcode=TokenRange(1, 2),
+        ),
+    )
 
 
 def test_country_housenumber_postcode():
-    q = make_query((BreakType.START, PhraseType.NONE, [(1, TokenType.COUNTRY)]),
-                   (BreakType.WORD, PhraseType.NONE, [(2, TokenType.PARTIAL)]),
-                   (BreakType.WORD, PhraseType.NONE, [(3, TokenType.HOUSENUMBER)]),
-                   (BreakType.WORD, PhraseType.NONE, [(4, TokenType.POSTCODE)]))
+    q = make_query(
+        (BreakType.START, PhraseType.NONE, [(1, TokenType.COUNTRY)]),
+        (BreakType.WORD, PhraseType.NONE, [(2, TokenType.PARTIAL)]),
+        (BreakType.WORD, PhraseType.NONE, [(3, TokenType.HOUSENUMBER)]),
+        (BreakType.WORD, PhraseType.NONE, [(4, TokenType.POSTCODE)]),
+    )
 
     check_assignments(yield_token_assignments(q))
 
 
-@pytest.mark.parametrize('ttype', [TokenType.POSTCODE, TokenType.COUNTRY,
-                                   TokenType.NEAR_ITEM, TokenType.QUALIFIER])
+@pytest.mark.parametrize(
+    "ttype",
+    [TokenType.POSTCODE, TokenType.COUNTRY, TokenType.NEAR_ITEM, TokenType.QUALIFIER],
+)
 def test_housenumber_with_only_special_terms(ttype):
-    q = make_query((BreakType.START, PhraseType.NONE, [(1, TokenType.HOUSENUMBER)]),
-                   (BreakType.WORD, PhraseType.NONE, [(2, ttype)]))
+    q = make_query(
+        (BreakType.START, PhraseType.NONE, [(1, TokenType.HOUSENUMBER)]),
+        (BreakType.WORD, PhraseType.NONE, [(2, ttype)]),
+    )
 
     check_assignments(yield_token_assignments(q))
 
 
-@pytest.mark.parametrize('ttype', [TokenType.POSTCODE, TokenType.HOUSENUMBER, TokenType.COUNTRY])
+@pytest.mark.parametrize(
+    "ttype", [TokenType.POSTCODE, TokenType.HOUSENUMBER, TokenType.COUNTRY]
+)
 def test_multiple_special_tokens(ttype):
-    q = make_query((BreakType.START, PhraseType.NONE, [(1, ttype)]),
-                   (BreakType.PHRASE, PhraseType.NONE, [(2, TokenType.PARTIAL)]),
-                   (BreakType.PHRASE, PhraseType.NONE, [(3, ttype)]))
+    q = make_query(
+        (BreakType.START, PhraseType.NONE, [(1, ttype)]),
+        (BreakType.PHRASE, PhraseType.NONE, [(2, TokenType.PARTIAL)]),
+        (BreakType.PHRASE, PhraseType.NONE, [(3, ttype)]),
+    )
 
     check_assignments(yield_token_assignments(q))
 
 
 def test_housenumber_many_phrases():
-    q = make_query((BreakType.START, PhraseType.NONE, [(1, TokenType.PARTIAL)]),
-                   (BreakType.PHRASE, PhraseType.NONE, [(2, TokenType.PARTIAL)]),
-                   (BreakType.PHRASE, PhraseType.NONE, [(3, TokenType.PARTIAL)]),
-                   (BreakType.PHRASE, PhraseType.NONE, [(4, TokenType.HOUSENUMBER)]),
-                   (BreakType.WORD, PhraseType.NONE, [(5, TokenType.PARTIAL)]))
+    q = make_query(
+        (BreakType.START, PhraseType.NONE, [(1, TokenType.PARTIAL)]),
+        (BreakType.PHRASE, PhraseType.NONE, [(2, TokenType.PARTIAL)]),
+        (BreakType.PHRASE, PhraseType.NONE, [(3, TokenType.PARTIAL)]),
+        (BreakType.PHRASE, PhraseType.NONE, [(4, TokenType.HOUSENUMBER)]),
+        (BreakType.WORD, PhraseType.NONE, [(5, TokenType.PARTIAL)]),
+    )
 
-    check_assignments(yield_token_assignments(q),
-                      TokenAssignment(penalty=0.1,
-                                      name=TokenRange(4, 5),
-                                      housenumber=TokenRange(3, 4),\
-                                      address=[TokenRange(0, 1), TokenRange(1, 2),
-                                               TokenRange(2, 3)]),
-                      TokenAssignment(penalty=0.1,
-                                      housenumber=TokenRange(3, 4),\
-                                      address=[TokenRange(0, 1), TokenRange(1, 2),
-                                               TokenRange(2, 3), TokenRange(4, 5)]))
+    check_assignments(
+        yield_token_assignments(q),
+        TokenAssignment(
+            penalty=0.1,
+            name=TokenRange(4, 5),
+            housenumber=TokenRange(3, 4),
+            address=[TokenRange(0, 1), TokenRange(1, 2), TokenRange(2, 3)],
+        ),
+        TokenAssignment(
+            penalty=0.1,
+            housenumber=TokenRange(3, 4),
+            address=[
+                TokenRange(0, 1),
+                TokenRange(1, 2),
+                TokenRange(2, 3),
+                TokenRange(4, 5),
+            ],
+        ),
+    )
 
 
 def test_country_at_beginning():
-    q = make_query((BreakType.START, PhraseType.NONE, [(1, TokenType.COUNTRY)]),
-                   (BreakType.WORD, PhraseType.NONE, [(2, TokenType.PARTIAL)]))
+    q = make_query(
+        (BreakType.START, PhraseType.NONE, [(1, TokenType.COUNTRY)]),
+        (BreakType.WORD, PhraseType.NONE, [(2, TokenType.PARTIAL)]),
+    )
 
-    check_assignments(yield_token_assignments(q),
-                      TokenAssignment(penalty=0.1, name=TokenRange(1, 2),
-                                      country=TokenRange(0, 1)))
+    check_assignments(
+        yield_token_assignments(q),
+        TokenAssignment(penalty=0.1, name=TokenRange(1, 2), country=TokenRange(0, 1)),
+    )
 
 
 def test_country_at_end():
-    q = make_query((BreakType.START, PhraseType.NONE, [(1, TokenType.PARTIAL)]),
-                   (BreakType.WORD, PhraseType.NONE, [(2, TokenType.COUNTRY)]))
+    q = make_query(
+        (BreakType.START, PhraseType.NONE, [(1, TokenType.PARTIAL)]),
+        (BreakType.WORD, PhraseType.NONE, [(2, TokenType.COUNTRY)]),
+    )
 
-    check_assignments(yield_token_assignments(q),
-                      TokenAssignment(penalty=0.1, name=TokenRange(0, 1),
-                                      country=TokenRange(1, 2)))
+    check_assignments(
+        yield_token_assignments(q),
+        TokenAssignment(penalty=0.1, name=TokenRange(0, 1), country=TokenRange(1, 2)),
+    )
 
 
 def test_country_in_middle():
-    q = make_query((BreakType.START, PhraseType.NONE, [(1, TokenType.PARTIAL)]),
-                   (BreakType.WORD, PhraseType.NONE, [(2, TokenType.COUNTRY)]),
-                   (BreakType.WORD, PhraseType.NONE, [(3, TokenType.PARTIAL)]))
+    q = make_query(
+        (BreakType.START, PhraseType.NONE, [(1, TokenType.PARTIAL)]),
+        (BreakType.WORD, PhraseType.NONE, [(2, TokenType.COUNTRY)]),
+        (BreakType.WORD, PhraseType.NONE, [(3, TokenType.PARTIAL)]),
+    )
 
     check_assignments(yield_token_assignments(q))
 
 
 def test_postcode_with_designation():
-    q = make_query((BreakType.START, PhraseType.NONE, [(1, TokenType.POSTCODE)]),
-                   (BreakType.PHRASE, PhraseType.NONE, [(2, TokenType.PARTIAL)]))
+    q = make_query(
+        (BreakType.START, PhraseType.NONE, [(1, TokenType.POSTCODE)]),
+        (BreakType.PHRASE, PhraseType.NONE, [(2, TokenType.PARTIAL)]),
+    )
 
-    check_assignments(yield_token_assignments(q),
-                      TokenAssignment(penalty=0.1, name=TokenRange(1, 2),
-                                      postcode=TokenRange(0, 1)),
-                      TokenAssignment(postcode=TokenRange(0, 1),
-                                      address=[TokenRange(1, 2)]))
+    check_assignments(
+        yield_token_assignments(q),
+        TokenAssignment(penalty=0.1, name=TokenRange(1, 2), postcode=TokenRange(0, 1)),
+        TokenAssignment(postcode=TokenRange(0, 1), address=[TokenRange(1, 2)]),
+    )
 
 
 def test_postcode_with_designation_backwards():
-    q = make_query((BreakType.START, PhraseType.NONE, [(1, TokenType.PARTIAL)]),
-                   (BreakType.PHRASE, PhraseType.NONE, [(2, TokenType.POSTCODE)]))
+    q = make_query(
+        (BreakType.START, PhraseType.NONE, [(1, TokenType.PARTIAL)]),
+        (BreakType.PHRASE, PhraseType.NONE, [(2, TokenType.POSTCODE)]),
+    )
 
-    check_assignments(yield_token_assignments(q),
-                      TokenAssignment(name=TokenRange(0, 1),
-                                      postcode=TokenRange(1, 2)),
-                      TokenAssignment(penalty=0.1, postcode=TokenRange(1, 2),
-                                      address=[TokenRange(0, 1)]))
+    check_assignments(
+        yield_token_assignments(q),
+        TokenAssignment(name=TokenRange(0, 1), postcode=TokenRange(1, 2)),
+        TokenAssignment(
+            penalty=0.1, postcode=TokenRange(1, 2), address=[TokenRange(0, 1)]
+        ),
+    )
 
 
 def test_near_item_at_beginning():
-    q = make_query((BreakType.START, PhraseType.NONE, [(1, TokenType.NEAR_ITEM)]),
-                   (BreakType.WORD, PhraseType.NONE, [(2, TokenType.PARTIAL)]))
+    q = make_query(
+        (BreakType.START, PhraseType.NONE, [(1, TokenType.NEAR_ITEM)]),
+        (BreakType.WORD, PhraseType.NONE, [(2, TokenType.PARTIAL)]),
+    )
 
-    check_assignments(yield_token_assignments(q),
-                      TokenAssignment(penalty=0.1, name=TokenRange(1, 2),
-                                      near_item=TokenRange(0, 1)))
+    check_assignments(
+        yield_token_assignments(q),
+        TokenAssignment(penalty=0.1, name=TokenRange(1, 2), near_item=TokenRange(0, 1)),
+    )
 
 
 def test_near_item_at_end():
-    q = make_query((BreakType.START, PhraseType.NONE, [(1, TokenType.PARTIAL)]),
-                   (BreakType.WORD, PhraseType.NONE, [(2, TokenType.NEAR_ITEM)]))
+    q = make_query(
+        (BreakType.START, PhraseType.NONE, [(1, TokenType.PARTIAL)]),
+        (BreakType.WORD, PhraseType.NONE, [(2, TokenType.NEAR_ITEM)]),
+    )
 
-    check_assignments(yield_token_assignments(q),
-                      TokenAssignment(penalty=0.1, name=TokenRange(0, 1),
-                                      near_item=TokenRange(1, 2)))
+    check_assignments(
+        yield_token_assignments(q),
+        TokenAssignment(penalty=0.1, name=TokenRange(0, 1), near_item=TokenRange(1, 2)),
+    )
 
 
 def test_near_item_in_middle():
-    q = make_query((BreakType.START, PhraseType.NONE, [(1, TokenType.PARTIAL)]),
-                   (BreakType.WORD, PhraseType.NONE, [(2, TokenType.NEAR_ITEM)]),
-                   (BreakType.WORD, PhraseType.NONE, [(3, TokenType.PARTIAL)]))
+    q = make_query(
+        (BreakType.START, PhraseType.NONE, [(1, TokenType.PARTIAL)]),
+        (BreakType.WORD, PhraseType.NONE, [(2, TokenType.NEAR_ITEM)]),
+        (BreakType.WORD, PhraseType.NONE, [(3, TokenType.PARTIAL)]),
+    )
 
     check_assignments(yield_token_assignments(q))
 
 
 def test_qualifier_at_beginning():
-    q = make_query((BreakType.START, PhraseType.NONE, [(1, TokenType.QUALIFIER)]),
-                   (BreakType.WORD, PhraseType.NONE, [(2, TokenType.PARTIAL)]),
-                   (BreakType.WORD, PhraseType.NONE, [(3, TokenType.PARTIAL)]))
+    q = make_query(
+        (BreakType.START, PhraseType.NONE, [(1, TokenType.QUALIFIER)]),
+        (BreakType.WORD, PhraseType.NONE, [(2, TokenType.PARTIAL)]),
+        (BreakType.WORD, PhraseType.NONE, [(3, TokenType.PARTIAL)]),
+    )
 
-
-    check_assignments(yield_token_assignments(q),
-                      TokenAssignment(penalty=0.1, name=TokenRange(1, 3),
-                                      qualifier=TokenRange(0, 1)),
-                      TokenAssignment(penalty=0.2, name=TokenRange(1, 2),
-                                      qualifier=TokenRange(0, 1),
-                                      address=[TokenRange(2, 3)]))
+    check_assignments(
+        yield_token_assignments(q),
+        TokenAssignment(penalty=0.1, name=TokenRange(1, 3), qualifier=TokenRange(0, 1)),
+        TokenAssignment(
+            penalty=0.2,
+            name=TokenRange(1, 2),
+            qualifier=TokenRange(0, 1),
+            address=[TokenRange(2, 3)],
+        ),
+    )
 
 
 def test_qualifier_after_name():
-    q = make_query((BreakType.START, PhraseType.NONE, [(1, TokenType.PARTIAL)]),
-                   (BreakType.WORD, PhraseType.NONE, [(2, TokenType.PARTIAL)]),
-                   (BreakType.WORD, PhraseType.NONE, [(3, TokenType.QUALIFIER)]),
-                   (BreakType.WORD, PhraseType.NONE, [(4, TokenType.PARTIAL)]),
-                   (BreakType.WORD, PhraseType.NONE, [(5, TokenType.PARTIAL)]))
+    q = make_query(
+        (BreakType.START, PhraseType.NONE, [(1, TokenType.PARTIAL)]),
+        (BreakType.WORD, PhraseType.NONE, [(2, TokenType.PARTIAL)]),
+        (BreakType.WORD, PhraseType.NONE, [(3, TokenType.QUALIFIER)]),
+        (BreakType.WORD, PhraseType.NONE, [(4, TokenType.PARTIAL)]),
+        (BreakType.WORD, PhraseType.NONE, [(5, TokenType.PARTIAL)]),
+    )
 
-
-    check_assignments(yield_token_assignments(q),
-                      TokenAssignment(penalty=0.2, name=TokenRange(0, 2),
-                                      qualifier=TokenRange(2, 3),
-                                      address=[TokenRange(3, 5)]),
-                      TokenAssignment(penalty=0.2, name=TokenRange(3, 5),
-                                      qualifier=TokenRange(2, 3),
-                                      address=[TokenRange(0, 2)]))
+    check_assignments(
+        yield_token_assignments(q),
+        TokenAssignment(
+            penalty=0.2,
+            name=TokenRange(0, 2),
+            qualifier=TokenRange(2, 3),
+            address=[TokenRange(3, 5)],
+        ),
+        TokenAssignment(
+            penalty=0.2,
+            name=TokenRange(3, 5),
+            qualifier=TokenRange(2, 3),
+            address=[TokenRange(0, 2)],
+        ),
+    )
 
 
 def test_qualifier_before_housenumber():
-    q = make_query((BreakType.START, PhraseType.NONE, [(1, TokenType.QUALIFIER)]),
-                   (BreakType.WORD, PhraseType.NONE, [(2, TokenType.HOUSENUMBER)]),
-                   (BreakType.WORD, PhraseType.NONE, [(3, TokenType.PARTIAL)]))
+    q = make_query(
+        (BreakType.START, PhraseType.NONE, [(1, TokenType.QUALIFIER)]),
+        (BreakType.WORD, PhraseType.NONE, [(2, TokenType.HOUSENUMBER)]),
+        (BreakType.WORD, PhraseType.NONE, [(3, TokenType.PARTIAL)]),
+    )
 
     check_assignments(yield_token_assignments(q))
 
 
 def test_qualifier_after_housenumber():
-    q = make_query((BreakType.START, PhraseType.NONE, [(1, TokenType.HOUSENUMBER)]),
-                   (BreakType.WORD, PhraseType.NONE, [(2, TokenType.QUALIFIER)]),
-                   (BreakType.WORD, PhraseType.NONE, [(3, TokenType.PARTIAL)]))
+    q = make_query(
+        (BreakType.START, PhraseType.NONE, [(1, TokenType.HOUSENUMBER)]),
+        (BreakType.WORD, PhraseType.NONE, [(2, TokenType.QUALIFIER)]),
+        (BreakType.WORD, PhraseType.NONE, [(3, TokenType.PARTIAL)]),
+    )
 
     check_assignments(yield_token_assignments(q))
 
 
 def test_qualifier_in_middle_of_phrase():
-    q = make_query((BreakType.START, PhraseType.NONE, [(1, TokenType.PARTIAL)]),
-                   (BreakType.PHRASE, PhraseType.NONE, [(2, TokenType.PARTIAL)]),
-                   (BreakType.WORD, PhraseType.NONE, [(3, TokenType.QUALIFIER)]),
-                   (BreakType.WORD, PhraseType.NONE, [(4, TokenType.PARTIAL)]),
-                   (BreakType.PHRASE, PhraseType.NONE, [(5, TokenType.PARTIAL)]))
+    q = make_query(
+        (BreakType.START, PhraseType.NONE, [(1, TokenType.PARTIAL)]),
+        (BreakType.PHRASE, PhraseType.NONE, [(2, TokenType.PARTIAL)]),
+        (BreakType.WORD, PhraseType.NONE, [(3, TokenType.QUALIFIER)]),
+        (BreakType.WORD, PhraseType.NONE, [(4, TokenType.PARTIAL)]),
+        (BreakType.PHRASE, PhraseType.NONE, [(5, TokenType.PARTIAL)]),
+    )
 
     check_assignments(yield_token_assignments(q))
-

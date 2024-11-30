@@ -6,7 +6,7 @@ Nominatim
 Nominatim (from the Latin, 'by name') is a tool to search OpenStreetMap data
 by name and address (geocoding) and to generate synthetic addresses of
 OSM points (reverse geocoding). An instance with up-to-date data can be found
-at https://nominatim.openstreetmap.org. Nominatim is also used as one of the
+at <https://nominatim.openstreetmap.org>. Nominatim is also used as one of the
 sources for the Search box on the OpenStreetMap home page.
 
 Documentation
@@ -14,12 +14,12 @@ Documentation
 
 The documentation of the latest development version is in the
 `docs/` subdirectory. A HTML version can be found at
-https://nominatim.org/release-docs/develop/ .
+<https://nominatim.org/release-docs/develop/> .
 
 Installation
 ============
 
-The latest stable release can be downloaded from https://nominatim.org.
+The latest stable release can be downloaded from <https://nominatim.org>.
 There you can also find [installation instructions for the release](https://nominatim.org/release-docs/latest/admin/Installation), as well as an extensive [Troubleshooting/FAQ section](https://nominatim.org/release-docs/latest/admin/Faq/).
 
 [Detailed installation instructions for current master](https://nominatim.org/release-docs/develop/admin/Installation)
@@ -43,14 +43,12 @@ A quick summary of the necessary steps:
         ./nominatim-venv/bin/pip install uvicorn falcon
         ../nominatim-venv/bin/nominatim serve
 
-
 License
 =======
 
 The Python source code is available under a GPL license version 3 or later.
 The Lua configuration files for osm2pgsql are released under the
 Apache License, Version 2.0. All other files are under a GPLv2 license.
-
 
 Contributing
 ============
@@ -64,7 +62,6 @@ first (see 'Questions' below).
 
 For details on contributing, have a look at the
 [contribution guide](CONTRIBUTING.md).
-
 
 Questions and help
 ==================

@@ -52,7 +52,7 @@ export DEBIAN_FRONTEND=noninteractive #DOCS:
 # To be able to copy and paste instructions from this manual, export
 # user name and home directory now like this:
 #
-if [ "x$USERNAME" == "x" ]; then #DOCS:
+if [ "$USERNAME" == "" ]; then #DOCS:
     export USERNAME=vagrant        #DOCS:    export USERNAME=nominatim
     export USERHOME=/home/vagrant  #DOCS:    export USERHOME=/srv/nominatim
 fi                                 #DOCS:
@@ -61,7 +61,7 @@ fi                                 #DOCS:
 #
 # Make sure that system servers can read from the home directory:
 
-    chmod a+x $USERHOME
+    chmod a+x "$USERHOME"
 
 # Setting up PostgreSQL
 # ---------------------
@@ -73,7 +73,7 @@ fi                                 #DOCS:
 #
 # Restart the postgresql service after updating this config file.
 
-if [ "x$NOSYSTEMD" == "xyes" ]; then  #DOCS:
+if [ "$NOSYSTEMD" == "yes" ]; then  #DOCS:
     sudo pg_ctlcluster 16 main start  #DOCS:
 else                                  #DOCS:
     sudo systemctl restart postgresql
@@ -84,7 +84,7 @@ fi                                    #DOCS:
 # for reading only:
 #
 
-    sudo -u postgres createuser -s $USERNAME
+    sudo -u postgres createuser -s "$USERNAME"
     sudo -u postgres createuser www-data
 
 #
@@ -96,12 +96,12 @@ fi                                    #DOCS:
 #
 # Get the source code from Github and change into the source directory
 #
-if [ "x$1" == "xyes" ]; then  #DOCS:    :::sh
-    cd $USERHOME
+if [ "$1" == "yes" ]; then  #DOCS:    :::sh
+    cd "$USERHOME"
     git clone https://github.com/osm-search/Nominatim.git
     cd Nominatim
 else                               #DOCS:
-    cd $USERHOME/Nominatim         #DOCS:
+    cd "$USERHOME"/Nominatim         #DOCS:
 fi                                 #DOCS:
 
 # When installing the latest source from github, you also need to
@@ -114,16 +114,16 @@ fi                                 #DOCS:
 # Nominatim should be installed in a separate Python virtual environment.
 # Create the virtual environment:
 
-    virtualenv $USERHOME/nominatim-venv
+    virtualenv "$USERHOME"/nominatim-venv
 
 # We want the faster binary version pf psycopg, so install that:
 
-    $USERHOME/nominatim-venv/bin/pip install psycopg[binary]
+    "$USERHOME"/nominatim-venv/bin/pip install psycopg[binary]
 
 # Now install Nominatim using pip:
 
-    cd $USERHOME/Nominatim
-    $USERHOME/nominatim-venv/bin/pip install packaging/nominatim-db
+    cd "$USERHOME"/Nominatim
+    "$USERHOME"/nominatim-venv/bin/pip install packaging/nominatim-db
 
 # Nominatim is now ready to use. The nominatim binary is available at
 # `$USERHOME/venv/bin/nominatim`. If you want to have 'nominatim' in your
@@ -147,9 +147,9 @@ fi                                 #DOCS:
 # To install all packages, run:
 
 #DOCS:```sh
-$USERHOME/nominatim-venv/bin/pip install falcon uvicorn gunicorn
-cd $USERHOME/Nominatim
-$USERHOME/nominatim-venv/bin/pip install packaging/nominatim-api
+"$USERHOME"/nominatim-venv/bin/pip install falcon uvicorn gunicorn
+cd "$USERHOME"/Nominatim
+"$USERHOME"/nominatim-venv/bin/pip install packaging/nominatim-api
 #DOCS:```
 
 # Next you need to create a systemd job that runs Nominatim on gunicorn.
@@ -214,13 +214,13 @@ fi                                    #DOCS:
 # [during the import process](../admin/Import.md#creating-the-project-directory)
 # Already create the project directory itself now:
 
-    mkdir $USERHOME/nominatim-project
+    mkdir "$USERHOME"/nominatim-project
 
 #
 # Option 1: Using Apache
 # ----------------------
 #
-if [ "x$2" == "xinstall-apache" ]; then #DOCS:
+if [ "$2" == "install-apache" ]; then #DOCS:
 #
 # First install apache itself and enable the proxy module:
 
@@ -245,7 +245,7 @@ EOFAPACHECONF
 sudo a2enconf nominatim
 #DOCS:```
 
-if [ "x$NOSYSTEMD" == "xyes" ]; then  #DOCS:
+if [ "$NOSYSTEMD" == "yes" ]; then  #DOCS:
     sudo apache2ctl start             #DOCS:
 else                                  #DOCS:
     sudo systemctl restart apache2
@@ -260,7 +260,7 @@ fi   #DOCS:
 # Option 2: Using nginx
 # ---------------------
 #
-if [ "x$2" == "xinstall-nginx" ]; then #DOCS:
+if [ "$2" == "install-nginx" ]; then #DOCS:
 
 # First install nginx itself:
 
@@ -292,7 +292,7 @@ EOF_NGINX_CONF
 # Enable the configuration and restart Nginx
 #
 
-if [ "x$NOSYSTEMD" == "xyes" ]; then  #DOCS:
+if [ "$NOSYSTEMD" == "yes" ]; then  #DOCS:
     sudo /usr/sbin/nginx &            #DOCS:
 else                                  #DOCS:
     sudo systemctl restart nginx

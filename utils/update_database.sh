@@ -51,11 +51,11 @@ do
     FILENAME=${COUNTRY//[\/]/_}
 
     echo "Attempting to get changes"
-    rm -f ${DIR}/${FILENAME}.osc.gz
-    pyosmium-get-changes -o ${DIR}/${FILENAME}.osc.gz -f ${FILE} --server $BASEURL -v
+    rm -f "${DIR}"/"${FILENAME}".osc.gz
+    pyosmium-get-changes -o "${DIR}"/"${FILENAME}".osc.gz -f "${FILE}" --server "$BASEURL" -v
 
     echo "Attempting to import diffs"
-    nominatim add-data --diff ${DIR}/${FILENAME}.osc.gz
+    nominatim add-data --diff "${DIR}"/"${FILENAME}".osc.gz
 done
 
 echo "===================================================================="
