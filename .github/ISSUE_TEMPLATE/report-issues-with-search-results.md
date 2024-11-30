@@ -17,7 +17,7 @@ assignees: ''
 
 ## What result did you expect?
 
-**When the result is in the right place and just named wrongly:** 
+**When the result is in the right place and just named wrongly:**
 
 <!-- Please tell us the display name you expected. -->
 

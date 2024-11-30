@@ -45,28 +45,28 @@ a single place (for reverse) of the following format:
 
 The possible fields are:
 
- * `place_id` - reference to the Nominatim internal database ID ([see notes](#place_id-is-not-a-persistent-id))
- * `osm_type`, `osm_id` - reference to the OSM object ([see notes](#osm-reference))
- * `boundingbox` - area of corner coordinates ([see notes](#boundingbox))
- * `lat`, `lon` - latitude and longitude of the centroid of the object
- * `display_name` - full comma-separated address
- * `class`, `type` - key and value of the main OSM tag
- * `importance` - computed importance rank
- * `icon` - link to class icon (if available)
- * `address` - dictionary of address details (only with `addressdetails=1`,
+* `place_id` - reference to the Nominatim internal database ID ([see notes](#place_id-is-not-a-persistent-id))
+* `osm_type`, `osm_id` - reference to the OSM object ([see notes](#osm-reference))
+* `boundingbox` - area of corner coordinates ([see notes](#boundingbox))
+* `lat`, `lon` - latitude and longitude of the centroid of the object
+* `display_name` - full comma-separated address
+* `class`, `type` - key and value of the main OSM tag
+* `importance` - computed importance rank
+* `icon` - link to class icon (if available)
+* `address` - dictionary of address details (only with `addressdetails=1`,
    [see notes](#addressdetails))
- * `extratags` - dictionary with additional useful tags like website or maxspeed
+* `extratags` - dictionary with additional useful tags like website or maxspeed
    (only with `extratags=1`)
- * `namedetails` - dictionary with full list of available names including ref etc.
- * `geojson`, `svg`, `geotext`, `geokml` - full geometry
+* `namedetails` - dictionary with full list of available names including ref etc.
+* `geojson`, `svg`, `geotext`, `geokml` - full geometry
    (only with the appropriate `polygon_*` parameter)
 
 ## JSONv2
 
 This is the same as the JSON format with two changes:
 
- * `class` renamed to `category`
- * additional field `place_rank` with the search rank of the object
+* `class` renamed to `category`
+* additional field `place_rank` with the search rank of the object
 
 ## GeoJSON
 
@@ -75,18 +75,18 @@ a bounding box (`bbox`).
 
 The properties object has the following fields:
 
- * `place_id` - reference to the Nominatim internal database ID ([see notes](#place_id-is-not-a-persistent-id))
- * `osm_type`, `osm_id` - reference to the OSM object ([see notes](#osm-reference))
- * `category`, `type` - key and value of the main OSM tag
- * `display_name` - full comma-separated address
- * `place_rank` - class search rank
- * `importance` - computed importance rank
- * `icon` - link to class icon (if available)
- * `address` - dictionary of address details (only with `addressdetails=1`,
+* `place_id` - reference to the Nominatim internal database ID ([see notes](#place_id-is-not-a-persistent-id))
+* `osm_type`, `osm_id` - reference to the OSM object ([see notes](#osm-reference))
+* `category`, `type` - key and value of the main OSM tag
+* `display_name` - full comma-separated address
+* `place_rank` - class search rank
+* `importance` - computed importance rank
+* `icon` - link to class icon (if available)
+* `address` - dictionary of address details (only with `addressdetails=1`,
    [see notes](#addressdetails))
- * `extratags` - dictionary with additional useful tags like `website` or `maxspeed`
+* `extratags` - dictionary with additional useful tags like `website` or `maxspeed`
    (only with `extratags=1`)
- * `namedetails` - dictionary with full list of available names including ref etc.
+* `namedetails` - dictionary with full list of available names including ref etc.
 
 Use `polygon_geojson` to output the full geometry of the object instead
 of the centroid.
@@ -97,17 +97,17 @@ The GeocodeJSON format follows the
 [GeocodeJSON spec 0.1.0](https://github.com/geocoders/geocodejson-spec).
 The following feature attributes are implemented:
 
- * `osm_type`, `osm_id` - reference to the OSM object (unofficial extension, [see notes](#osm-reference))
- * `type` - the 'address level' of the object ('house', 'street', `district`, `city`,
+* `osm_type`, `osm_id` - reference to the OSM object (unofficial extension, [see notes](#osm-reference))
+* `type` - the 'address level' of the object ('house', 'street', `district`, `city`,
             `county`, `state`, `country`, `locality`)
- * `osm_key`- key of the main tag of the OSM object (e.g. boundary, highway, amenity)
- * `osm_value` - value of the main tag of the OSM object (e.g. residential, restaurant)
- * `label` - full comma-separated address
- * `name` - localised name of the place
- * `housenumber`, `street`, `locality`, `district`, `postcode`, `city`,
+* `osm_key`- key of the main tag of the OSM object (e.g. boundary, highway, amenity)
+* `osm_value` - value of the main tag of the OSM object (e.g. residential, restaurant)
+* `label` - full comma-separated address
+* `name` - localised name of the place
+* `housenumber`, `street`, `locality`, `district`, `postcode`, `city`,
    `county`, `state`, `country` -
    provided when it can be determined from the address
- * `admin` - list of localised names of administrative boundaries (only with `addressdetails=1`)
+* `admin` - list of localised names of administrative boundaries (only with `addressdetails=1`)
 
 Use `polygon_geojson` to output the full geometry of the object instead
 of the centroid.
@@ -150,11 +150,11 @@ attribution to OSM and the original querystring.
 
 The place information can be found in the `result` element. The attributes of that element contain:
 
- * `place_id` - reference to the Nominatim internal database ID ([see notes](#place_id-is-not-a-persistent-id))
- * `osm_type`, `osm_id` - reference to the OSM object ([see notes](#osm-reference))
- * `ref` - content of `ref` tag if it exists
- * `lat`, `lon` - latitude and longitude of the centroid of the object
- * `boundingbox` - comma-separated list of corner coordinates ([see notes](#boundingbox))
+* `place_id` - reference to the Nominatim internal database ID ([see notes](#place_id-is-not-a-persistent-id))
+* `osm_type`, `osm_id` - reference to the OSM object ([see notes](#osm-reference))
+* `ref` - content of `ref` tag if it exists
+* `lat`, `lon` - latitude and longitude of the centroid of the object
+* `boundingbox` - comma-separated list of corner coordinates ([see notes](#boundingbox))
 
 The full address of the result can be found in the content of the
 `result` element as a comma-separated list.
@@ -195,28 +195,28 @@ Additional information requested with `addressdetails=1`, `extratags=1` and
 The attributes of the outer `searchresults` or `lookupresults` element return
 generic information about the query:
 
- * `timestamp` - UTC time when the response was sent
- * `attribution` - OSM licensing information
- * `querystring` - original query
- * `polygon` - true when extra geometry information was requested
- * `exclude_place_ids` - IDs of places that should be ignored in a follow-up request
- * `more_url` - search call that will yield additional results for the query
+* `timestamp` - UTC time when the response was sent
+* `attribution` - OSM licensing information
+* `querystring` - original query
+* `polygon` - true when extra geometry information was requested
+* `exclude_place_ids` - IDs of places that should be ignored in a follow-up request
+* `more_url` - search call that will yield additional results for the query
    just sent
 
 The place information can be found in the `place` elements, of which there may
 be more than one. The attributes of that element contain:
 
- * `place_id` - reference to the Nominatim internal database ID ([see notes](#place_id-is-not-a-persistent-id))
- * `osm_type`, `osm_id` - reference to the OSM object ([see notes](#osm-reference))
- * `ref` - content of `ref` tag if it exists
- * `lat`, `lon` - latitude and longitude of the centroid of the object
- * `boundingbox` - comma-separated list of corner coordinates ([see notes](#boundingbox))
- * `place_rank` - class [search rank](../customize/Ranking.md#search-rank)
- * `address_rank` - place [address rank](../customize/Ranking.md#address-rank)
- * `display_name` - full comma-separated address
- * `class`, `type` - key and value of the main OSM tag
- * `importance` - computed importance rank
- * `icon` - link to class icon (if available)
+* `place_id` - reference to the Nominatim internal database ID ([see notes](#place_id-is-not-a-persistent-id))
+* `osm_type`, `osm_id` - reference to the OSM object ([see notes](#osm-reference))
+* `ref` - content of `ref` tag if it exists
+* `lat`, `lon` - latitude and longitude of the centroid of the object
+* `boundingbox` - comma-separated list of corner coordinates ([see notes](#boundingbox))
+* `place_rank` - class [search rank](../customize/Ranking.md#search-rank)
+* `address_rank` - place [address rank](../customize/Ranking.md#address-rank)
+* `display_name` - full comma-separated address
+* `class`, `type` - key and value of the main OSM tag
+* `importance` - computed importance rank
+* `icon` - link to class icon (if available)
 
 When `addressdetails=1` is requested, the localised address parts appear
 as subelements with the type of the address part.
@@ -224,7 +224,6 @@ as subelements with the type of the address part.
 Additional information requested with `extratags=1` and `namedetails=1` can
 be found in extra elements as sub-element of `extratags` and `namedetails`
 respectively.
-
 
 ## Notes on field values
 
@@ -283,20 +282,20 @@ essentially covering the entire planet
 Address details in the xml and json formats return a list of names together
 with a designation label. Per default the following labels may appear:
 
- * continent
- * country, country_code
- * region, state, state_district, county, ISO3166-2-lvl<admin_level>
- * municipality, city, town, village
- * city_district, district, borough, suburb, subdivision
- * hamlet, croft, isolated_dwelling
- * neighbourhood, allotments, quarter
- * city_block, residential, farm, farmyard, industrial, commercial, retail
- * road
- * house_number, house_name
- * emergency, historic, military, natural, landuse, place, railway,
+* continent
+* country, country_code
+* region, state, state_district, county, ISO3166-2-lvl<admin_level>
+* municipality, city, town, village
+* city_district, district, borough, suburb, subdivision
+* hamlet, croft, isolated_dwelling
+* neighbourhood, allotments, quarter
+* city_block, residential, farm, farmyard, industrial, commercial, retail
+* road
+* house_number, house_name
+* emergency, historic, military, natural, landuse, place, railway,
    man_made, aerialway, boundary, amenity, aeroway, club, craft, leisure,
    office, mountain_pass, shop, tourism, bridge, tunnel, waterway
- * postcode
+* postcode
 
 They roughly correspond to the classification of the OpenStreetMap data
 according to either the `place` tag or the main key of the object.

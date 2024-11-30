@@ -12,16 +12,17 @@ import itertools
 from nominatim_db.db import properties
 
 # This must always point to the mock word table for the default tokenizer.
-from mock_icu_word_table import MockIcuWordTable as MockWordTable
+
 
 class MockPlacexTable:
-    """ A placex table for testing.
-    """
+    """A placex table for testing."""
+
     def __init__(self, conn):
         self.idseq = itertools.count(10000)
         self.conn = conn
         with conn.cursor() as cur:
-            cur.execute("""CREATE TABLE placex (
+            cur.execute(
+                """CREATE TABLE placex (
                                place_id BIGINT,
                                parent_place_id BIGINT,
                                linked_place_id BIGINT,
@@ -46,40 +47,82 @@ class MockPlacexTable:
                                country_code varchar(2),
                                housenumber TEXT,
                                postcode TEXT,
-                               centroid GEOMETRY(Geometry, 4326))""")
+                               centroid GEOMETRY(Geometry, 4326))"""
+            )
             cur.execute("CREATE SEQUENCE IF NOT EXISTS seq_place")
         conn.commit()
 
-    def add(self, osm_type='N', osm_id=None, cls='amenity', typ='cafe', names=None,
-            admin_level=None, address=None, extratags=None, geom='POINT(10 4)',
-            country=None, housenumber=None, rank_search=30):
+    def add(
+        self,
+        osm_type="N",
+        osm_id=None,
+        cls="amenity",
+        typ="cafe",
+        names=None,
+        admin_level=None,
+        address=None,
+        extratags=None,
+        geom="POINT(10 4)",
+        country=None,
+        housenumber=None,
+        rank_search=30,
+    ):
+        """
+            Inserts a new place record into the 'placex' database table.
+
+        Parameters:
+            osm_type (str): The type of OSM object ('N' for node, 'W' for way, 'R' for relation).
+            osm_id (int, optional): The OSM identifier. If None, a new ID is generated.
+            cls (str): The classification of the place (e.g., 'amenity').
+            typ (str): The specific type of the place (e.g., 'cafe').
+            names (dict or None): The names of the place in different languages.
+            admin_level (int or None): The administrative level of the place.
+            address (dict or None): The address details of the place.
+            extratags (dict or None): Additional tags associated with the place.
+            geom (str): The WKT representation of the geometry. Default is "POINT(10 4)".
+            country (str or None): The country code of the place.
+            housenumber (str or None): The house number of the place.
+            rank_search (int): The search ranking for the place. Default is 30.
+
+        Returns:
+            None
+        """
         with self.conn.cursor() as cur:
-            cur.execute("""INSERT INTO placex (place_id, osm_type, osm_id, class,
+            cur.execute(
+                """INSERT INTO placex (place_id, osm_type, osm_id, class,
                                                type, name, admin_level, address,
                                                housenumber, rank_search,
                                                extratags, geometry, country_code)
-                            VALUES(nextval('seq_place'), %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)""",
-                        (osm_type, osm_id or next(self.idseq), cls, typ, names,
-                         admin_level, address, housenumber, rank_search,
-                         extratags, 'SRID=4326;' + geom,
-                         country))
+                            VALUES(nextval('seq_place'), %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s
+                            , %s)""",
+                (
+                    osm_type,
+                    osm_id or next(self.idseq),
+                    cls,
+                    typ,
+                    names,
+                    admin_level,
+                    address,
+                    housenumber,
+                    rank_search,
+                    extratags,
+                    "SRID=4326;" + geom,
+                    country,
+                ),
+            )
         self.conn.commit()
 
 
 class MockPropertyTable:
-    """ A property table for testing.
-    """
+    """A property table for testing."""
+
     def __init__(self, conn):
         self.conn = conn
 
-
     def set(self, name, value):
-        """ Set a property in the table to the given value.
-        """
+        """Set a property in the table to the given value."""
         properties.set_property(self.conn, name, value)
 
-
     def get(self, name):
-        """ Set a property in the table to the given value.
-        """
+        """Set a property in the table to the given value."""
         return properties.get_property(self.conn, name)

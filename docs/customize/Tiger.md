@@ -8,7 +8,7 @@ entire US adds about 10GB to your database.
   1. Get preprocessed TIGER data:
 
         cd $PROJECT_DIR
-        wget https://nominatim.org/data/tiger-nominatim-preprocessed-latest.csv.tar.gz
+        wget <https://nominatim.org/data/tiger-nominatim-preprocessed-latest.csv.tar.gz>
 
   2. Import the data into your Nominatim database:
 
@@ -22,7 +22,5 @@ entire US adds about 10GB to your database.
 
         nominatim refresh --functions --website
 
-
 See the [TIGER-data project](https://github.com/osm-search/TIGER-data) for more
 information on how the data got preprocessed.
-

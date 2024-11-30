@@ -4,8 +4,8 @@ This page contains generic installation instructions for Nominatim and its
 prerequisites. There are also step-by-step instructions available for
 the following operating systems:
 
-  * [Ubuntu 24.04](Install-on-Ubuntu-24.md)
-  * [Ubuntu 22.04](Install-on-Ubuntu-22.md)
+* [Ubuntu 24.04](Install-on-Ubuntu-24.md)
+* [Ubuntu 22.04](Install-on-Ubuntu-22.md)
 
 These OS-specific instructions can also be found in executable form
 in the `vagrant/` directory.
@@ -13,10 +13,10 @@ in the `vagrant/` directory.
 Users have created instructions for other frameworks. We haven't tested those
 and can't offer support.
 
-  * [Docker](https://github.com/mediagis/nominatim-docker)
-  * [Docker on Kubernetes](https://github.com/peter-evans/nominatim-k8s)
-  * [Kubernetes with Helm](https://github.com/robjuz/helm-charts/blob/master/charts/nominatim/README.md)
-  * [Ansible](https://github.com/synthesio/infra-ansible-nominatim)
+* [Docker](https://github.com/mediagis/nominatim-docker)
+* [Docker on Kubernetes](https://github.com/peter-evans/nominatim-k8s)
+* [Kubernetes with Helm](https://github.com/robjuz/helm-charts/blob/master/charts/nominatim/README.md)
+* [Ansible](https://github.com/synthesio/infra-ansible-nominatim)
 
 ## Prerequisites
 
@@ -24,35 +24,35 @@ and can't offer support.
 
 For running Nominatim:
 
-  * [PostgreSQL](https://www.postgresql.org) (12+ will work, 13+ strongly recommended)
-  * [PostGIS](https://postgis.net) (3.0+ will work, 3.2+ strongly recommended)
-  * [osm2pgsql](https://osm2pgsql.org) (1.8+, optional when building with CMake)
-  * [Python 3](https://www.python.org/) (3.7+)
+* [PostgreSQL](https://www.postgresql.org) (12+ will work, 13+ strongly recommended)
+* [PostGIS](https://postgis.net) (3.0+ will work, 3.2+ strongly recommended)
+* [osm2pgsql](https://osm2pgsql.org) (1.8+, optional when building with CMake)
+* [Python 3](https://www.python.org/) (3.7+)
 
 Furthermore the following Python libraries are required:
 
-  * [Psycopg3](https://www.psycopg.org)
-  * [Python Dotenv](https://github.com/theskumar/python-dotenv)
-  * [psutil](https://github.com/giampaolo/psutil)
-  * [Jinja2](https://palletsprojects.com/p/jinja/)
-  * [PyICU](https://pypi.org/project/PyICU/)
-  * [PyYaml](https://pyyaml.org/) (5.1+)
-  * [datrie](https://github.com/pytries/datrie)
+* [Psycopg3](https://www.psycopg.org)
+* [Python Dotenv](https://github.com/theskumar/python-dotenv)
+* [psutil](https://github.com/giampaolo/psutil)
+* [Jinja2](https://palletsprojects.com/p/jinja/)
+* [PyICU](https://pypi.org/project/PyICU/)
+* [PyYaml](https://pyyaml.org/) (5.1+)
+* [datrie](https://github.com/pytries/datrie)
 
 These will be installed automatically when using pip installation.
 
 For running continuous updates:
 
-  * [pyosmium](https://osmcode.org/pyosmium/)
+* [pyosmium](https://osmcode.org/pyosmium/)
 
 For running the Python frontend:
 
-  * [SQLAlchemy](https://www.sqlalchemy.org/) (1.4.31+ with greenlet support)
-  * [asyncpg](https://magicstack.github.io/asyncpg) (0.8+, only when using SQLAlchemy < 2.0)
-  * one of the following web frameworks:
-    * [falcon](https://falconframework.org/) (3.0+)
-    * [starlette](https://www.starlette.io/)
-  * [uvicorn](https://www.uvicorn.org/)
+* [SQLAlchemy](https://www.sqlalchemy.org/) (1.4.31+ with greenlet support)
+* [asyncpg](https://magicstack.github.io/asyncpg) (0.8+, only when using SQLAlchemy < 2.0)
+* one of the following web frameworks:
+  * [falcon](https://falconframework.org/) (3.0+)
+  * [starlette](https://www.starlette.io/)
+* [uvicorn](https://www.uvicorn.org/)
 
 For dependencies for running tests and building documentation, see
 the [Development section](../develop/Development-Environment.md).
@@ -142,6 +142,5 @@ Nominatim is easiest to run from its own virtual environment. To create one, run
 To install Nominatim directly from the source tree into the virtual environment, run:
 
     /srv/nominatim-venv/bin/pip install packaging/nominatim-{db,api}
-
 
 Now continue with [importing the database](Import.md).

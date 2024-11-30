@@ -17,16 +17,16 @@ versions.
 ## Reporting a Vulnerability
 
 If you believe, you have found an issue in Nominatim that has implications on
-security, please send a description of the issue to **security@nominatim.org**.
+security, please send a description of the issue to **<security@nominatim.org>**.
 You will receive an acknowledgement of your mail within 3 work days where we
 also notify you of the next steps.
 
 ## How we Disclose Security Issues
 
-** The following section only applies to security issues found in released
+**The following section only applies to security issues found in released
 versions. Issues that concern the master development branch only will be
 fixed immediately on the branch with the corresponding PR containing the
-description of the nature and severity of the issue. **
+description of the nature and severity of the issue.**
 
 Patches for identified security issues are applied to all affected versions and
 new minor versions are released. At the same time we release a statement at

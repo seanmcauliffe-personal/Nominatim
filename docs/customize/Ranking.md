@@ -80,11 +80,11 @@ only.
 Search and address ranks are assigned to a place when it is first imported
 into the database. There are a few hard-coded rules for the assignment:
 
- * postcodes follow special rules according to their length
- * boundaries that are not areas and railway=rail are dropped completely
- * the following are always search rank 30 and address rank 0:
-    * highway nodes
-    * landuse that is not an area
+* postcodes follow special rules according to their length
+* boundaries that are not areas and railway=rail are dropped completely
+* the following are always search rank 30 and address rank 0:
+  * highway nodes
+  * landuse that is not an area
 
 Other than that, the ranks can be freely assigned via the JSON file according
 to their type and the country they are in. The name of the config file to be
@@ -136,4 +136,3 @@ Countries and key/value combination may appear in multiple definitions. Just
 make sure that each combination of country/key/value appears only once per
 file. Otherwise the import will fail with a UNIQUE INDEX constraint violation
 on import.
-

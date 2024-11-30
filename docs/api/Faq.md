@@ -2,7 +2,7 @@
 
 ## API Results
 
-#### 1. The address of my search results contains far-away places that don't belong there.
+### 1. The address of my search results contains far-away places that don't belong there
 
 Nominatim computes the address from two sources in the OpenStreetMap data:
 from administrative boundaries and from place nodes. Boundaries are the more
@@ -23,7 +23,7 @@ should _link_ the two by adding the node with a 'label' role to the boundary
 relation. If there is no administrative area, you can add the approximate
 extent of the place and tag it place=<something> as well.
 
-#### 2. When doing reverse search, the address details have parts that don't contain the point I was looking up.
+#### 2. When doing reverse search, the address details have parts that don't contain the point I was looking up
 
 There is a common misconception how the reverse API call works in Nominatim.
 Reverse does not give you the address of the point you asked for. Reverse
@@ -82,4 +82,3 @@ Now go to [OpenStreetMap](https://openstreetmap.org) and fix the error you
 have just found. It will take at least a day for Nominatim to catch up with
 your data fix. Sometimes longer, depending on how much editing activity is in
 the area.
-

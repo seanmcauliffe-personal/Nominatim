@@ -8,10 +8,12 @@ import pytest
 
 import nominatim_db.cli
 
+
 class MockParamCapture:
-    """ Mock that records the parameters with which a function was called
-        as well as the number of calls.
+    """Mock that records the parameters with which a function was called
+    as well as the number of calls.
     """
+
     def __init__(self, retval=0):
         self.called = 0
         self.return_value = retval
@@ -26,9 +28,10 @@ class MockParamCapture:
 
 
 class AsyncMockParamCapture:
-    """ Mock that records the parameters with which a function was called
-        as well as the number of calls.
+    """Mock that records the parameters with which a function was called
+    as well as the number of calls.
     """
+
     def __init__(self, retval=0):
         self.called = 0
         self.return_value = retval
@@ -64,12 +67,14 @@ class DummyTokenizer:
 
 @pytest.fixture
 def cli_call():
-    """ Call the nominatim main function with the correct paths set.
-        Returns a function that can be called with the desired CLI arguments.
+    """Call the nominatim main function with the correct paths set.
+    Returns a function that can be called with the desired CLI arguments.
     """
+
     def _call_nominatim(*args):
-        return nominatim_db.cli.nominatim(osm2pgsql_path='OSM2PGSQL NOT AVAILABLE',
-                                          cli_args=args)
+        return nominatim_db.cli.nominatim(
+            osm2pgsql_path="OSM2PGSQL NOT AVAILABLE", cli_args=args
+        )
 
     return _call_nominatim
 
@@ -99,9 +104,11 @@ def async_mock_func_factory(monkeypatch):
 @pytest.fixture
 def cli_tokenizer_mock(monkeypatch):
     tok = DummyTokenizer()
-    monkeypatch.setattr(nominatim_db.tokenizer.factory, 'get_tokenizer_for_db',
-                        lambda *args: tok)
-    monkeypatch.setattr(nominatim_db.tokenizer.factory, 'create_tokenizer',
-                        lambda *args: tok)
+    monkeypatch.setattr(
+        nominatim_db.tokenizer.factory, "get_tokenizer_for_db", lambda *args: tok
+    )
+    monkeypatch.setattr(
+        nominatim_db.tokenizer.factory, "create_tokenizer", lambda *args: tok
+    )
 
     return tok

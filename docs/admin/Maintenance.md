@@ -2,7 +2,6 @@ This chapter describes the various operations the Nominatim database administrat
 may use to clean and maintain the database. None of these operations is mandatory
 but they may help improve the performance and accuracy of results.
 
-
 ## Updating postcodes
 
 Command: `nominatim refresh --postcodes`
@@ -21,7 +20,6 @@ is only updated when the place is updated.
 The command takes around 70min to run on the planet and needs ca. 40GB of
 temporary disk space.
 
-
 ## Updating word counts
 
 Command: `nominatim refresh --word-counts`
@@ -32,7 +30,6 @@ statistics mean better performance. Word counts are created once after import
 and are usually sufficient even when running regular updates. You might want
 to rerun the statistics computation when adding larger amounts of new data,
 for example, when adding an additional country via `nominatim add-data`.
-
 
 ## Forcing recomputation of places and areas
 
@@ -57,7 +54,6 @@ update are running in the background, the objects will be recomputed together
 with the next round of updates. Otherwise you need to run `nominatim index`
 to finish the recomputation.
 
-
 ## Removing large deleted objects
 
 Command: `nominatim admin --clean-deleted <PostgreSQL Time Interval>`
@@ -66,7 +62,6 @@ Nominatim refuses to delete very large areas because often these deletions are
 accidental and are reverted within hours. Instead the deletions are logged in
 the `import_polygon_delete` table and left to the administrator to clean up.
 
-To run this command you will need to pass a PostgreSQL time interval. For example to 
+To run this command you will need to pass a PostgreSQL time interval. For example to
 delete any objects that have been deleted more than a month ago you would run:
 `nominatim admin --clean-deleted '1 month'`
-

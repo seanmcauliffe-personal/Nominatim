@@ -24,81 +24,119 @@ OSM_NODE_DATA = """\
 </osm>
 """
 
+
 @pytest.fixture(autouse=True)
 def setup_status_table(status_table):
     pass
 
-### init replication
+
+# init replication
+
 
 def test_init_replication_bad_base_url(monkeypatch, place_row, temp_db_conn):
-    place_row(osm_type='N', osm_id=100)
+    place_row(osm_type="N", osm_id=100)
 
     monkeypatch.setattr(status, "get_url", lambda u: OSM_NODE_DATA)
 
     with pytest.raises(UsageError, match="Failed to reach replication service"):
-        nominatim_db.tools.replication.init_replication(temp_db_conn, 'https://test.io')
+        nominatim_db.tools.replication.init_replication(temp_db_conn, "https://test.io")
 
 
 def test_init_replication_success(monkeypatch, place_row, temp_db_conn, temp_db_cursor):
-    place_row(osm_type='N', osm_id=100)
+    place_row(osm_type="N", osm_id=100)
 
     monkeypatch.setattr(status, "get_url", lambda u: OSM_NODE_DATA)
-    monkeypatch.setattr(nominatim_db.tools.replication.ReplicationServer,
-                        "timestamp_to_sequence",
-                        lambda self, date: 234)
+    monkeypatch.setattr(
+        nominatim_db.tools.replication.ReplicationServer,
+        "timestamp_to_sequence",
+        lambda self, date: 234,
+    )
 
-    nominatim_db.tools.replication.init_replication(temp_db_conn, 'https://test.io')
+    nominatim_db.tools.replication.init_replication(temp_db_conn, "https://test.io")
 
-    expected_date = dt.datetime.strptime('2006-01-27T19:09:10', status.ISODATE_FORMAT)\
-                        .replace(tzinfo=dt.timezone.utc)
+    expected_date = dt.datetime.strptime(
+        "2006-01-27T19:09:10", status.ISODATE_FORMAT
+    ).replace(tzinfo=dt.timezone.utc)
 
-    assert temp_db_cursor.row_set("SELECT * FROM import_status") \
-             == {(expected_date, 234, True)}
+    assert temp_db_cursor.row_set("SELECT * FROM import_status") == {
+        (expected_date, 234, True)
+    }
 
 
-### checking for updates
+# checking for updates
+
 
 def test_check_for_updates_empty_status_table(temp_db_conn):
-    assert nominatim_db.tools.replication.check_for_updates(temp_db_conn, 'https://test.io') == 254
+    assert (
+        nominatim_db.tools.replication.check_for_updates(
+            temp_db_conn, "https://test.io"
+        )
+        == 254
+    )
 
 
 def test_check_for_updates_seq_not_set(temp_db_conn):
     status.set_status(temp_db_conn, dt.datetime.now(dt.timezone.utc))
 
-    assert nominatim_db.tools.replication.check_for_updates(temp_db_conn, 'https://test.io') == 254
+    assert (
+        nominatim_db.tools.replication.check_for_updates(
+            temp_db_conn, "https://test.io"
+        )
+        == 254
+    )
 
 
 def test_check_for_updates_no_state(monkeypatch, temp_db_conn):
     status.set_status(temp_db_conn, dt.datetime.now(dt.timezone.utc), seq=345)
 
-    monkeypatch.setattr(nominatim_db.tools.replication.ReplicationServer,
-                        "get_state_info", lambda self: None)
+    monkeypatch.setattr(
+        nominatim_db.tools.replication.ReplicationServer,
+        "get_state_info",
+        lambda self: None,
+    )
 
-    assert nominatim_db.tools.replication.check_for_updates(temp_db_conn, 'https://test.io') == 253
+    assert (
+        nominatim_db.tools.replication.check_for_updates(
+            temp_db_conn, "https://test.io"
+        )
+        == 253
+    )
 
 
 @pytest.mark.parametrize("server_sequence,result", [(344, 2), (345, 2), (346, 0)])
-def test_check_for_updates_no_new_data(monkeypatch, temp_db_conn,
-                                       server_sequence, result):
+def test_check_for_updates_no_new_data(
+    monkeypatch, temp_db_conn, server_sequence, result
+):
     date = dt.datetime.now(dt.timezone.utc)
     status.set_status(temp_db_conn, date, seq=345)
 
-    monkeypatch.setattr(nominatim_db.tools.replication.ReplicationServer,
-                        "get_state_info",
-                        lambda self: OsmosisState(server_sequence, date))
+    monkeypatch.setattr(
+        nominatim_db.tools.replication.ReplicationServer,
+        "get_state_info",
+        lambda self: OsmosisState(server_sequence, date),
+    )
 
-    assert nominatim_db.tools.replication.check_for_updates(temp_db_conn, 'https://test.io') == result
+    assert (
+        nominatim_db.tools.replication.check_for_updates(
+            temp_db_conn, "https://test.io"
+        )
+        == result
+    )
 
 
-### updating
+# updating
+
 
 @pytest.fixture
 def update_options(tmpdir):
-    return dict(base_url='https://test.io',
-                indexed_only=False,
-                update_interval=3600,
-                import_file=tmpdir / 'foo.osm',
-                max_diff_size=1)
+    return dict(
+        base_url="https://test.io",
+        indexed_only=False,
+        update_interval=3600,
+        import_file=tmpdir / "foo.osm",
+        max_diff_size=1,
+    )
+
 
 def test_update_empty_status_table(dsn):
     with pytest.raises(UsageError):
@@ -106,25 +144,33 @@ def test_update_empty_status_table(dsn):
 
 
 def test_update_already_indexed(temp_db_conn, dsn):
-    status.set_status(temp_db_conn, dt.datetime.now(dt.timezone.utc), seq=34, indexed=False)
+    status.set_status(
+        temp_db_conn, dt.datetime.now(dt.timezone.utc), seq=34, indexed=False
+    )
 
-    assert nominatim_db.tools.replication.update(dsn, dict(indexed_only=True)) \
-             == nominatim_db.tools.replication.UpdateState.MORE_PENDING
+    assert (
+        nominatim_db.tools.replication.update(dsn, dict(indexed_only=True))
+        == nominatim_db.tools.replication.UpdateState.MORE_PENDING
+    )
 
 
 def test_update_no_data_no_sleep(monkeypatch, temp_db_conn, dsn, update_options):
     date = dt.datetime.now(dt.timezone.utc) - dt.timedelta(days=1)
     status.set_status(temp_db_conn, date, seq=34)
 
-    monkeypatch.setattr(nominatim_db.tools.replication.ReplicationServer,
-                        "apply_diffs",
-                        lambda *args, **kwargs: None)
+    monkeypatch.setattr(
+        nominatim_db.tools.replication.ReplicationServer,
+        "apply_diffs",
+        lambda *args, **kwargs: None,
+    )
 
     sleeptime = []
-    monkeypatch.setattr(time, 'sleep', sleeptime.append)
+    monkeypatch.setattr(time, "sleep", sleeptime.append)
 
-    assert nominatim_db.tools.replication.update(dsn, update_options) \
-             == nominatim_db.tools.replication.UpdateState.NO_CHANGES
+    assert (
+        nominatim_db.tools.replication.update(dsn, update_options)
+        == nominatim_db.tools.replication.UpdateState.NO_CHANGES
+    )
 
     assert not sleeptime
 
@@ -133,15 +179,19 @@ def test_update_no_data_sleep(monkeypatch, temp_db_conn, dsn, update_options):
     date = dt.datetime.now(dt.timezone.utc) - dt.timedelta(minutes=30)
     status.set_status(temp_db_conn, date, seq=34)
 
-    monkeypatch.setattr(nominatim_db.tools.replication.ReplicationServer,
-                        "apply_diffs",
-                        lambda *args, **kwargs: None)
+    monkeypatch.setattr(
+        nominatim_db.tools.replication.ReplicationServer,
+        "apply_diffs",
+        lambda *args, **kwargs: None,
+    )
 
     sleeptime = []
-    monkeypatch.setattr(time, 'sleep', sleeptime.append)
+    monkeypatch.setattr(time, "sleep", sleeptime.append)
 
-    assert nominatim_db.tools.replication.update(dsn, update_options) \
-             == nominatim_db.tools.replication.UpdateState.NO_CHANGES
+    assert (
+        nominatim_db.tools.replication.update(dsn, update_options)
+        == nominatim_db.tools.replication.UpdateState.NO_CHANGES
+    )
 
     assert len(sleeptime) == 1
     assert sleeptime[0] < 3600

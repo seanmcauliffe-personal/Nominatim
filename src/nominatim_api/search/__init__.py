@@ -4,10 +4,3 @@
 #
 # Copyright (C) 2024 by the Nominatim developer community.
 # For a full list of authors see the git log.
-"""
-Module for forward search.
-"""
-from .geocoder import (ForwardGeocoder as ForwardGeocoder)
-from .query import (Phrase as Phrase,
-                    PhraseType as PhraseType)
-from .query_analyzer_factory import (make_query_analyzer as make_query_analyzer)

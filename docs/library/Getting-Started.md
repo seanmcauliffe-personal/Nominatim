@@ -138,7 +138,6 @@ example, using the configuration from a pre-defined project directory in
             print(f'Found a place at {results[0].centroid.x},{results[0].centroid.y}')
         ```
 
-
 You may also configure Nominatim by setting environment variables.
 Normally Nominatim will check the operating system environment. Lets
 say you want to look up 'Brugge' in the special database named 'belgium' instead of the

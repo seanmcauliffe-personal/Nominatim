@@ -1,8 +1,8 @@
 # Advanced installations
 
-This page contains instructions for setting up multiple countries in 
+This page contains instructions for setting up multiple countries in
 your Nominatim database. It is assumed that you have already successfully
-installed the Nominatim software itself, if not return to the 
+installed the Nominatim software itself, if not return to the
 [installation page](Installation.md).
 
 ## Importing with a database user without superuser rights
@@ -81,7 +81,6 @@ The `sequence.state` files contain the sequence ID for each region. They will
 be used by pyosmium to get updates. The `tmp` folder is used for import dump and
 can be deleted once the import is complete.
 
-
 ### Setting up multiple regions
 
 Create a project directory as described for the
@@ -111,7 +110,6 @@ Now customize both files as per your requirements
         FOLLOWUP="curl http://localhost:2322/nominatim-update"
 
     will handle the indexing.
-
 
 To start the initial import, change into the project directory and run
 

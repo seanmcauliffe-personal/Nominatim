@@ -12,6 +12,7 @@ import pytest
 from nominatim_api.errors import UsageError
 import nominatim_api.types as typ
 
+
 def test_no_params_defaults():
     params = typ.LookupDetails.from_kwargs({})
 
@@ -19,17 +20,23 @@ def test_no_params_defaults():
     assert params.geometry_simplification == 0.0
 
 
-@pytest.mark.parametrize('k,v', [('geometry_output',  'a'),
-                                 ('linked_places', 0),
-                                 ('geometry_simplification', 'NaN')])
+@pytest.mark.parametrize(
+    "k,v",
+    [
+        ("geometry_output", "a"),
+        ("linked_places", 0),
+        ("geometry_simplification", "NaN"),
+    ],
+)
 def test_bad_format_reverse(k, v):
     with pytest.raises(UsageError):
         params = typ.ReverseDetails.from_kwargs({k: v})
 
 
-@pytest.mark.parametrize('rin,rout', [(-23, 0), (0, 0), (1, 1),
-                                      (15, 15), (30, 30), (31, 30)])
+@pytest.mark.parametrize(
+    "rin,rout", [(-23, 0), (0, 0), (1, 1), (15, 15), (30, 30), (31, 30)]
+)
 def test_rank_params(rin, rout):
-    params = typ.ReverseDetails.from_kwargs({'max_rank': rin})
+    params = typ.ReverseDetails.from_kwargs({"max_rank": rin})
 
     assert params.max_rank == rout

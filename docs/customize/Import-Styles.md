@@ -38,7 +38,6 @@ local flex = require('flex-base')
 
 The following sections explain how the module can be customized.
 
-
 ### Changing the recognized tags
 
 If you just want to change which OSM tags are recognized during import,
@@ -56,10 +55,9 @@ during the processing.
 Many of the following functions take _key match lists_. These lists can
 contain three kinds of strings to match against tag keys:
 A string that ends in an asterisk `*` is a prefix match and accordingly matches
-against any key that starts with the given string (minus the `*`). 
+against any key that starts with the given string (minus the `*`).
 A suffix match can be defined similarly with a string that starts with a `*`.
 Any other string is matched exactly against tag keys.
-
 
 #### `set_main_tags()` - principal tags
 
@@ -110,7 +108,6 @@ key, then this is used as default for values that are not listed.
     it will be used independely of the concrete value if neither boundary
     nor highway tags were found and the object is named.
 
-
 #### `set_prefilters()` - ignoring tags
 
 Pre-filtering of tags allows to ignore them for any further processing.
@@ -132,7 +129,7 @@ to the user when requested, but are not used otherwise.
 
 Key list may contain three kinds of strings:
 A string that ends in an asterisk `*` is a prefix match and accordingly matches
-against any key that starts with the given string (minus the `*`). 
+against any key that starts with the given string (minus the `*`).
 A suffix match can be defined similarly with a string that starts with a `*`.
 Any other string is matched exactly against tag keys.
 
@@ -232,7 +229,6 @@ are accepted, all other values are discarded.
     to postcodes, they will always be saved under the key `postcode` thus
     normalizing the multitude of keys that are used in the OSM database.
 
-
 #### `set_unused_handling()` - processing remaining tags
 
 This function defines what to do with tags that remain after all tags
@@ -296,7 +292,6 @@ kinds of geometries can be used:
     resolves to a valid area. Nodes in the site relation are not part of the
     geometry.
 
-
 #### Adding additional logic to processing functions
 
 The default processing functions are also exported by the flex-base module
@@ -318,7 +313,6 @@ logic.
     This example discards all country-level boundaries and uses standard
     handling for everything else. This can be useful if you want to use
     your own custom country boundaries.
-
 
 ### Customizing the main processing function
 
@@ -346,7 +340,6 @@ responsible for filtering the tags and writing out the rows into Postgresql.
     To do that, first save the original function and then overwrite process_tags
     from the module. In this example all highways which are not accessible
     by anyone will be ignored.
-
 
 #### The `Place` class
 
@@ -422,8 +415,6 @@ The __group match function__ is a Lua function which also takes two parameters,
 key and value, and returns a string indicating to which group or type they
 belong to. The `tag_group()` can be used to create such a function. It expects
 a table where the group names are the keys and the values are a key match list.
-
-
 
 ### Using the gazetteer output of osm2pgsql
 

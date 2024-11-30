@@ -213,9 +213,9 @@ analyzer must have an `id` parameter that uniquely identifies the analyzer.
 The only exception is the default analyzer that is used when no special
 analyzer was selected. There are analysers with special ids:
 
- * '@housenumber'. If an analyzer with that name is present, it is used
+* '@housenumber'. If an analyzer with that name is present, it is used
    for normalization of house numbers.
- * '@potcode'. If an analyzer with that name is present, it is used
+* '@potcode'. If an analyzer with that name is present, it is used
    for normalization of postcodes.
 
 Different analyzer implementations may exist. To select the implementation,

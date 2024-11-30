@@ -15,8 +15,7 @@ to configure it.
     located in `/srv/nominatim-project`. If you have put it somewhere else,
     you need to adjust the commands and configuration accordingly.
 
-
-### Installing the required packages
+## Installing the required packages
 
 The Nominatim frontend is best run from its own virtual environment. If
 you have already created one for the database backend during the

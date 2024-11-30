@@ -12,12 +12,12 @@ from typing import Any
 # flake8: noqa
 
 try:
-    import sqlalchemy.dialects.postgresql.psycopg
     import psycopg
-    PGCORE_LIB = 'psycopg'
+
+    PGCORE_LIB = "psycopg"
     PGCORE_ERROR: Any = psycopg.Error
 except ModuleNotFoundError:
-    import sqlalchemy.dialects.postgresql.asyncpg
     import asyncpg
-    PGCORE_LIB = 'asyncpg'
+
+    PGCORE_LIB = "asyncpg"
     PGCORE_ERROR = asyncpg.PostgresError

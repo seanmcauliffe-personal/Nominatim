@@ -10,9 +10,10 @@ Helper script for development to run nominatim from the source directory.
 """
 from pathlib import Path
 import sys
-
-sys.path.insert(1, str((Path(__file__) / '..' / 'src').resolve()))
-
 from nominatim_db import cli
+
+
+sys.path.insert(1, str((Path(__file__) / ".." / "src").resolve()))
+
 
 exit(cli.nominatim(module_dir=None, osm2pgsql_path=None))

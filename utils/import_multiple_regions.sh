@@ -38,10 +38,10 @@ UPDATEDIR=update
 IMPORT_CMD="nominatim import"
 
 mkdir -p ${UPDATEDIR}
-pushd ${UPDATEDIR}
+pushd ${UPDATEDIR} || exit
 rm -rf tmp
 mkdir -p tmp
-popd
+popd || exit
 
 for COUNTRY in $COUNTRIES;
 do
@@ -53,14 +53,14 @@ do
     IMPORTFILE=$COUNTRY$DOWNCOUNTRYPOSTFIX
     IMPORTFILEPATH=${UPDATEDIR}/tmp/${IMPORTFILE}
 
-    touch2 $IMPORTFILEPATH
-    wget ${DOWNURL} -O $IMPORTFILEPATH
+    touch2 "$IMPORTFILEPATH"
+    wget "${DOWNURL}" -O "$IMPORTFILEPATH"
 
-    touch2 ${DIR}/sequence.state
-    pyosmium-get-changes -O $IMPORTFILEPATH -f ${DIR}/sequence.state -v
+    touch2 "${DIR}"/sequence.state
+    pyosmium-get-changes -O "$IMPORTFILEPATH" -f "${DIR}"/sequence.state -v
 
     IMPORT_CMD="${IMPORT_CMD} --osm-file ${IMPORTFILEPATH}"
-    echo $IMPORTFILE
+    echo "$IMPORTFILE"
     echo "===================================================================="
 done
 
